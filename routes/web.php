@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Record;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// 測定値一覧
 Route::get('/', function () {
     return view('welcome');
+});
+
+// 保存処理
+Route::post('/records', function (Request $request) {
+    //
+});
+
+// 削除処理
+Route::deletet('/record/{record}', function (Record $record) {
+    //
 });
