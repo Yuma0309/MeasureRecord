@@ -29,3 +29,7 @@ Route::post('/records', function (Request $request) {
 Route::delete('/record/{record}', function (Record $record) {
     //
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
