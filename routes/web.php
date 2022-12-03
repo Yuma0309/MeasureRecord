@@ -26,6 +26,6 @@ Route::post('/records', function (Request $request) {
 });
 
 // 削除処理
-Route::deletet('/record/{record}', function (Record $record) {
+Route::delete('/record/{record}', function (Record $record) {
     //
 });
