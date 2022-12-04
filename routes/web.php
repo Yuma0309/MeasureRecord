@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 
 // 測定値一覧
 Route::get('/', function () {
-    return view('welcome');
+    return view('records');
 });
 
 // 保存処理

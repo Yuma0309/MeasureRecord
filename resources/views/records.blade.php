@@ -17,16 +17,16 @@
             @csrf
 
             <!-- タイトル -->
-            <div class="form-group">
-                <div class="col-sm-6">
+            <div class="form-row">
+                <div class="form-group col-md-6 m-2">
                     <input type="text" name="title" class="form-control">
                 </div>
             </div>
 
             <!-- 保存ボタン -->
-            <div class="form-group">
+            <div class="form-row">
                 <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary m-2">
                         Save
                     </button>
                 </div>
@@ -36,4 +36,3 @@
     <!-- 測定値一覧 -->
     
 @endsection
-
