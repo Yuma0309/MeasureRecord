@@ -22,7 +22,29 @@ Route::get('/', function () {
 
 // 保存処理
 Route::post('/records', function (Request $request) {
-    //
+
+    // バリデーション
+    $validator = Validator::make($request->all(), [
+        'title' => 'required|min:1|max:30',
+    ]);
+
+    //バリデーション：エラー
+    if ($validator->fails()) {
+        return redirect('/')
+            ->withInput()
+            ->withErrors($validator);
+    }
+
+    //Eloquentモデル（保存処理）
+    $records = new Record;
+    $records->user_id = Auth::user()->id; //追加のコード
+    $records->title = $request->title;
+    $records->date = '2022-12-05 00:00:00';
+    $records->amount = '10.0';
+    $records->comment = 'トレーニングの成果です！';
+    $records->save();
+    return redirect('/');
+
 });
 
 // 削除処理
