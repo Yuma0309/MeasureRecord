@@ -29,6 +29,9 @@ Route::post('/records', function (Request $request) {
     // バリデーション
     $validator = Validator::make($request->all(), [
         'title' => 'required|min:1|max:30',
+        'date' => 'required',
+        'amount' => 'required|min:1|max:10',
+        'comment' => 'required|min:1',
     ]);
 
     //バリデーション：エラー
@@ -41,12 +44,18 @@ Route::post('/records', function (Request $request) {
     //Eloquentモデル（保存処理）
     $records = new Record;
     $records->title = $request->title;
-    $records->date = '2022-12-05 00:00:00';
-    $records->amount = '10.0';
-    $records->comment = 'トレーニングの成果です！';
+    $records->date = $request->date;
+    $records->amount = $request->amount;
+    $records->comment = $request->comment;
     $records->save();
     return redirect('/');
 
+});
+
+// 編集処理
+Route::post('/recordsedit/{records}', function (Record $record) {
+    //{records}id値を取得 = Record $records id値の1レコード取得
+    return view('recordsedit', ['record' => $records]);
 });
 
 // 削除処理
