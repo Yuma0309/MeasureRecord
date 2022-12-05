@@ -51,7 +51,8 @@ Route::post('/records', function (Request $request) {
 
 // 削除処理
 Route::delete('/record/{record}', function (Record $record) {
-    //
+    $record->delete();
+    return redirect('/');
 });
 
 Auth::routes();
