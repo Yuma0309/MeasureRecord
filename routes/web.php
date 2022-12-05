@@ -25,7 +25,6 @@ Route::get('/', function () {
 
 // 保存処理
 Route::post('/records', function (Request $request) {
-
     // バリデーション
     $validator = Validator::make($request->all(), [
         'title' => 'required|min:1|max:30',
@@ -49,13 +48,38 @@ Route::post('/records', function (Request $request) {
     $records->comment = $request->comment;
     $records->save();
     return redirect('/');
+});
 
+// 編集画面
+Route::post('/recordsedit/{records}', function (Record $records) {
+    //{records}id値を取得 = Record $records id値の1レコード取得
+    return view('recordsedit', ['record' => $records]);
 });
 
 // 編集処理
-Route::post('/recordsedit/{records}', function (Record $record) {
-    //{records}id値を取得 = Record $records id値の1レコード取得
-    return view('recordsedit', ['record' => $records]);
+Route::post('/records/update', function (Request $request) {
+    // バリデーション
+    $validator = Validator::make($request->all(), [
+        'id' => 'required',
+        'date' => 'required',
+        'amount' => 'required|min:1|max:10',
+        'comment' => 'required|min:1',
+    ]);
+
+    // バリデーション：エラー
+    if ($validator->fails()) {
+        return redirect('/')
+            ->withInput()
+            ->withErrors($validator);
+    }
+
+    // データ編集
+    $records = Record::find($request->id);
+    $records->date = $request->date;
+    $records->amount = $request->amount;
+    $records->comment = $request->comment;
+    $records->save();
+    return redirect('/');
 });
 
 // 削除処理

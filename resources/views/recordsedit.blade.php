@@ -9,7 +9,7 @@
         <!-- date -->
         <div class="form-group">
             <label for="date">日付</label>
-            <input type="datetime" name="date" class="form-control" value="{{$record->date}}"/>
+            <input type="date" name="date" class="form-control" value="{{$record->date}}"/>
         </div>
 
         <!-- amount -->
