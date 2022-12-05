@@ -37,7 +37,6 @@ Route::post('/records', function (Request $request) {
 
     //Eloquentモデル（保存処理）
     $records = new Record;
-    $records->user_id = Auth::user()->id; //追加のコード
     $records->title = $request->title;
     $records->date = '2022-12-05 00:00:00';
     $records->amount = '10.0';
