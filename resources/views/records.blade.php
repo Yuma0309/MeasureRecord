@@ -34,5 +34,35 @@
         </form>
     </div>
     <!-- 測定値一覧 -->
-    
+    @if (isset($records))
+        @if (count($records) > 0)
+            <div class="card-body">
+                <div class="card-body">
+                    <table class="table table-striped task-table">
+                        <!-- テーブルヘッダー -->
+                        <thead>
+                            <th>測定値一覧</th>
+                            <th>&nbsp;</th>
+                        </thead>
+                        <!-- テーブル本体 -->
+                        <tbody>
+                            @foreach ($records as $record)
+                                <tr>
+                                    <!-- 測定値 -->
+                                    <td class="table-text">
+                                        <div>{{ $record->amount }}</div>
+                                    </td>
+
+                                    <!-- 削除ボタン -->
+                                    <td>
+                                        
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endif
+    @endif
 @endsection

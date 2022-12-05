@@ -17,7 +17,10 @@ use Illuminate\Http\Request;
 
 // 測定値一覧
 Route::get('/', function () {
-    return view('records');
+    $records = Record::orderBy('created_at', 'asc')->get();
+    return view('records', [
+        'records' => $records
+    ]);
 });
 
 // 保存処理
