@@ -29,7 +29,7 @@ Route::post('/records', function (Request $request) {
     $validator = Validator::make($request->all(), [
         'title' => 'required|min:1|max:30',
         'date' => 'required',
-        'amount' => 'required|min:1|max:10',
+        'amount' => 'required|min:1|max:9',
         'comment' => 'required|min:1',
     ]);
 
@@ -62,7 +62,7 @@ Route::post('/records/update', function (Request $request) {
     $validator = Validator::make($request->all(), [
         'id' => 'required',
         'date' => 'required',
-        'amount' => 'required|min:1|max:10',
+        'amount' => 'required|min:1|max:9',
         'comment' => 'required|min:1',
     ]);
 

@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->string('title', 30);
-            $table->datetime('date')->comment('3/9');
-            $table->decimal('amount')->comment('数値');
-            $table->text('comment')->comment('トレーニングの成果が出た！');
+            $table->datetime('date');
+            $table->decimal('amount', 10, 1);
+            $table->text('comment');
             $table->timestamps();
         });
     }
