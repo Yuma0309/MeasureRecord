@@ -62,9 +62,19 @@
                         <tbody>
                             @foreach ($records as $record)
                                 <tr>
+                                    <!-- 日付 -->
+                                    <td class="table-text">
+                                        <div>{{ $record->date }}</div>
+                                    </td>
+
                                     <!-- 測定値 -->
                                     <td class="table-text">
                                         <div>{{ $record->amount }}</div>
+                                    </td>
+
+                                    <!-- コメント -->
+                                    <td class="table-text">
+                                        <div>{{ $record->comment }}</div>
                                     </td>
 
                                     <!-- 編集ボタン -->
