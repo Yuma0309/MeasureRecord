@@ -16,77 +16,19 @@ use Illuminate\Http\Request;
 */
 
 // 測定値一覧
-Route::get('/', function () {
-    $records = Record::orderBy('created_at', 'asc')->get();
-    return view('records', [
-        'records' => $records
-    ]);
-});
+Route::get('/', 'App\Http\Controllers\RecordsController@index');
 
 // 保存処理
-Route::post('/records', function (Request $request) {
-    // バリデーション
-    $validator = Validator::make($request->all(), [
-        'title' => 'required|min:1|max:30',
-        'date' => 'required',
-        'amount' => 'required|min:1|max:9',
-        'comment' => 'required|min:1',
-    ]);
-
-    //バリデーション：エラー
-    if ($validator->fails()) {
-        return redirect('/')
-            ->withInput()
-            ->withErrors($validator);
-    }
-
-    //Eloquentモデル（保存処理）
-    $records = new Record;
-    $records->title = $request->title;
-    $records->date = $request->date;
-    $records->amount = $request->amount;
-    $records->comment = $request->comment;
-    $records->save();
-    return redirect('/');
-});
+Route::post('/records', 'App\Http\Controllers\RecordsController@store');
 
 // 編集画面
-Route::post('/recordsedit/{records}', function (Record $records) {
-    //{records}id値を取得 = Record $records id値の1レコード取得
-    return view('recordsedit', ['record' => $records]);
-});
+Route::post('/recordsedit/{records}', 'App\Http\Controllers\RecordsController@edit');
 
 // 編集処理
-Route::post('/records/update', function (Request $request) {
-    // バリデーション
-    $validator = Validator::make($request->all(), [
-        'id' => 'required',
-        'date' => 'required',
-        'amount' => 'required|min:1|max:9',
-        'comment' => 'required|min:1',
-    ]);
-
-    // バリデーション：エラー
-    if ($validator->fails()) {
-        return redirect('/')
-            ->withInput()
-            ->withErrors($validator);
-    }
-
-    // データ編集
-    $records = Record::find($request->id);
-    $records->date = $request->date;
-    $records->amount = $request->amount;
-    $records->comment = $request->comment;
-    $records->save();
-    return redirect('/');
-});
+Route::post('/records/update', 'App\Http\Controllers\RecordsController@update');
 
 // 削除処理
-Route::delete('/record/{record}', function (Record $record) {
-    $record->delete();
-    return redirect('/');
-});
+Route::delete('/record/{record}', 'App\Http\Controllers\RecordsController@destroy');
 
 Auth::routes();
 
