@@ -42,7 +42,7 @@ class RecordsController extends Controller
         $records->amount = $request->amount;
         $records->comment = $request->comment;
         $records->save();
-        return redirect('/');
+        return redirect('/')->with('message', '保存しました');
     }
 
 
@@ -74,7 +74,7 @@ class RecordsController extends Controller
         $records->amount = $request->amount;
         $records->comment = $request->comment;
         $records->save();
-        return redirect('/');
+        return redirect('/')->with('message', '保存しました');
     }
 
     // 削除処理

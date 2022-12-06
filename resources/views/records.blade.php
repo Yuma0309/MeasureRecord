@@ -47,6 +47,13 @@
             </div>
         </form>
     </div>
+
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
+
     <!-- 測定値一覧 -->
     @if (isset($records))
         @if (count($records) > 0)
