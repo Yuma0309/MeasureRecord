@@ -12,7 +12,7 @@ class RecordsController extends Controller
 {
     // 測定値一覧表示
     public function index(){
-        $records = Record::orderBy('created_at', 'asc')->get();
+        $records = Record::orderBy('created_at', 'asc')->paginate(10);
         return view('records', [
             'records' => $records
         ]);

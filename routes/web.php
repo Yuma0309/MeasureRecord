@@ -30,6 +30,7 @@ Route::post('/records/update', 'App\Http\Controllers\RecordsController@update');
 // 削除処理
 Route::delete('/record/{record}', 'App\Http\Controllers\RecordsController@destroy');
 
+//Auth
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
