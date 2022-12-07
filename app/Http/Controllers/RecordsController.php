@@ -18,10 +18,15 @@ class RecordsController extends Controller
     }
     
     // 測定値一覧表示
-    public function index(){
-        $records = Record::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
+    public function index(Request $request){
+        $sort = $request->sort;
+        if (is_null($sort)) { //$sortの初期値（値がない場合）
+            $sort = 'created_at';
+        }
+        $records = Record::where('user_id', Auth::user()->id)->orderBy($sort, 'asc')->paginate(10);
         return view('records', [
-            'records' => $records
+            'records' => $records,
+            'sort' => $sort
         ]);
     }
 

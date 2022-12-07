@@ -64,6 +64,11 @@
                         <thead>
                             <th>測定値一覧</th>
                             <th>&nbsp;</th>
+                            <tr>
+                                <th><a href="/home?sort=date">日付</a></th>
+                                <th><a href="/home?sort=amount">測定値</a></th>
+                                <th><a href="/home?sort=comment">コメント</a></th>
+                            </tr>
                         </thead>
                         <!-- テーブル本体 -->
                         <tbody>
@@ -115,7 +120,7 @@
             <!-- ぺジネーション -->
             <div class="row">
                 <div class="col-md-4 offset-md-4">
-                    {{ $records->links()}}
+                    {{ $records->appends(['sort' => $sort])->links()}}
                 </div>
             </div>
             
