@@ -19,7 +19,7 @@ class RecordsController extends Controller
     
     // 測定値一覧表示
     public function index(){
-        $records = Record::orderBy('created_at', 'asc')->paginate(10);
+        $records = Record::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
         return view('records', [
             'records' => $records
         ]);
@@ -44,6 +44,7 @@ class RecordsController extends Controller
 
         //Eloquentモデル（保存処理）
         $records = new Record;
+        $records->user_id = Auth::user()->id;
         $records->title = $request->title;
         $records->date = $request->date;
         $records->amount = $request->amount;
@@ -54,7 +55,8 @@ class RecordsController extends Controller
 
 
     // 編集画面表示
-    public function edit(Record $records) {
+    public function edit($record_id) {
+        $records = Record::where('user_id', Auth::user()->id)->find($record_id);
         return view('recordsedit', ['record' => $records]);
     }
     
@@ -76,7 +78,7 @@ class RecordsController extends Controller
         }
 
         // データ編集
-        $records = Record::find($request->id);
+        $records = Record::where('user_id', Auth::user()->id)->find($request->id);
         $records->date = $request->date;
         $records->amount = $request->amount;
         $records->comment = $request->comment;

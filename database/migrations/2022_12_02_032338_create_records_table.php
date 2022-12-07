@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id');
             $table->string('title', 30);
             $table->datetime('date');
             $table->decimal('amount', 10, 1);
