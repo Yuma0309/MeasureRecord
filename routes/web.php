@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 |
 */
 
-// 測定値一覧
+// 測定値一覧画面
 Route::get('/', 'App\Http\Controllers\RecordsController@index');
 
 // 保存処理
@@ -32,5 +32,4 @@ Route::delete('/record/{record}', 'App\Http\Controllers\RecordsController@destro
 
 //Auth
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\RecordsController::class, 'index'])->name('home');

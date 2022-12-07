@@ -10,6 +10,13 @@ use Auth; //認証モデルを使用する
 
 class RecordsController extends Controller
 {
+    //コンストラクタ（このクラスが呼ばれたら最初に処理をする）
+    public function __construct()
+    {
+        //ログイン認証後にだけ表示
+        $this->middleware('auth');
+    }
+    
     // 測定値一覧表示
     public function index(){
         $records = Record::orderBy('created_at', 'asc')->paginate(10);
