@@ -54,6 +54,15 @@
         </div>
     @endif
 
+    <!-- 検索 -->
+    <div>
+        <form action="{{ url('records/search') }}" method="POST">
+            @csrf
+            <input type="text" name="keyword" value="{{ $keyword }}">
+            <input type="submit" value="検索">
+        </form>
+    </div>
+
     <!-- 測定値一覧 -->
     @if (isset($records))
         @if (count($records) > 0)

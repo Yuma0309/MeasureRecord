@@ -21,6 +21,9 @@ Route::get('/', 'App\Http\Controllers\RecordsController@index');
 // 保存処理
 Route::post('/records', 'App\Http\Controllers\RecordsController@store');
 
+// 検索処理
+Route::post('/records/search', 'App\Http\Controllers\RecordsController@search');
+
 // 編集画面
 Route::post('/recordsedit/{records}', 'App\Http\Controllers\RecordsController@edit');
 

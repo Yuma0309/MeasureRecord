@@ -25,8 +25,9 @@ class RecordsController extends Controller
         }
         $records = Record::where('user_id', Auth::user()->id)->orderBy($sort, 'asc')->paginate(10);
         return view('records', [
-            'records' => $records,
-            'sort' => $sort
+            'sort' => $sort,
+            'keyword' => '',
+            'records' => $records
         ]);
     }
 
@@ -58,6 +59,25 @@ class RecordsController extends Controller
         return redirect('/')->with('message', '保存しました');
     }
 
+    // 検索処理
+    public function search(Request $request){
+        $sort = 'created_at';
+
+        $keyword = $request->input('keyword');
+
+        $query = Record::query();
+
+        if(!empty($keyword)) {
+            $query->where('user_id', Auth::user()->id)
+                ->where('date', 'LIKE', "%{$keyword}%")
+                ->orWhere('amount', 'LIKE', "%{$keyword}%")
+                ->orWhere('comment', 'LIKE', "%{$keyword}%");
+        }
+
+        $records = $query->orderBy($sort, 'asc')->paginate(10);
+
+        return view('records', compact('sort', 'records', 'keyword'));
+    }
 
     // 編集画面表示
     public function edit($record_id) {
