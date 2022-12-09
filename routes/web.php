@@ -15,22 +15,28 @@ use Illuminate\Http\Request;
 |
 */
 
+// タイトル保存画面
+Route::get('/title', 'App\Http\Controllers\RecordsController@title');
+
+// タイトル保存処理
+Route::post('/title/store', 'App\Http\Controllers\RecordsController@titlestore');
+
 // 測定値一覧画面
 Route::get('/', 'App\Http\Controllers\RecordsController@index');
 
-// 保存処理
+// 測定値保存処理
 Route::post('/records', 'App\Http\Controllers\RecordsController@store');
 
-// 検索処理
+// 測定値検索処理
 Route::post('/records/search', 'App\Http\Controllers\RecordsController@search');
 
-// 編集画面
+// 測定値編集画面
 Route::post('/recordsedit/{records}', 'App\Http\Controllers\RecordsController@edit');
 
-// 編集処理
+// 測定値編集処理
 Route::post('/records/update', 'App\Http\Controllers\RecordsController@update');
 
-// 削除処理
+// 測定値削除処理
 Route::delete('/record/{record}', 'App\Http\Controllers\RecordsController@destroy');
 
 //Auth

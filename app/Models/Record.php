@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Record extends Model
 {
     use HasFactory;
+
+    Public function title()
+    {
+        // "Title"モデルのデータを取得する
+        return $this->belongsTo('App\Models\Title');
+    }
 }

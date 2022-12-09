@@ -3,6 +3,10 @@
 @extends('layouts.app')
 @section('content')
 
+
+    <!-- タイトル -->
+        <div>{{ $title->title }}</div>
+
     <!-- Bootstrapの定形コード… -->
     <div class="card-body">
         <div class="card-title">
@@ -16,10 +20,6 @@
         <form action="{{ url('records') }}" method="POST" class="form-horizontal">
             @csrf
             <div class="form-row">
-                <!-- タイトル -->
-                <div class="form-group col-md-6 m-2">
-                    <input type="text" name="title" class="form-control">
-                </div>
                 <!-- 日付 -->
                 <div class="form-group col-md-6 m-2">
                     <label for="date" class="col-sm-3 control-label">日付</label>
