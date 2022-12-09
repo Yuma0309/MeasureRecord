@@ -16,10 +16,10 @@ use Illuminate\Http\Request;
 */
 
 // タイトル保存画面
-Route::get('/title', 'App\Http\Controllers\RecordsController@title');
+Route::get('/titles', 'App\Http\Controllers\RecordsController@title');
 
 // タイトル保存処理
-Route::post('/title/store', 'App\Http\Controllers\RecordsController@titlestore');
+Route::post('/titles/store', 'App\Http\Controllers\RecordsController@titlestore');
 
 // 測定値一覧画面
 Route::get('/', 'App\Http\Controllers\RecordsController@index');

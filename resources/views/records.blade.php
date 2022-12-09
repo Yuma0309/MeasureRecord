@@ -5,7 +5,7 @@
 
 
     <!-- タイトル -->
-        <div>{{ $title->title }}</div>
+        <div>{{ $titles->title }}</div>
 
     <!-- Bootstrapの定形コード… -->
     <div class="card-body">

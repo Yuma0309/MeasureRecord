@@ -4,7 +4,7 @@
 <div class="row container">
     <div class="col-md-12">
     @include('common.errors')
-    <form action="{{ url('title/store') }}" method="POST">
+    <form action="{{ url('titles/store') }}" method="POST">
         
         <!-- title -->
         <div class="form-group col-md-6 m-2">

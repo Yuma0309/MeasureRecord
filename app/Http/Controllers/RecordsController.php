@@ -20,7 +20,7 @@ class RecordsController extends Controller
 
     // タイトル保存画面表示（タイトルが1つもない場合に表示させる）
     public function title() {
-        return view('title');
+        return view('titles');
     }
     
     // タイトル保存処理
@@ -32,16 +32,16 @@ class RecordsController extends Controller
 
         //バリデーション：エラー
         if ($validator->fails()) {
-            return redirect('/title')
+            return redirect('/titles')
                 ->withInput()
                 ->withErrors($validator);
         }
 
         //Eloquentモデル（保存処理）
-        $title = new Title;
-        $title->user_id = Auth::user()->id;
-        $title->title = $request->title;
-        $title->save();
+        $titles = new Title;
+        $titles->user_id = Auth::user()->id;
+        $titles->title = $request->title;
+        $titles->save();
         return redirect('/')->with('message', 'タイトルを保存しました');
     }
     
@@ -51,22 +51,22 @@ class RecordsController extends Controller
     public function index(Request $request){
 
         // タイトルが1つもない場合、タイトル保存画面を表示
-        // $records = Title::where('user_id', Auth::user()->id)->count();
-        // if ($records === 0) {
-        //     return redirect('/title');
-        // }
+        $records = Title::where('user_id', Auth::user()->id)->count();
+        if ($records === 0) {
+            return redirect('/titles');
+        }
 
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）
             $sort = 'created_at';
         }
         $records = Record::where('user_id', Auth::user()->id)->orderBy($sort, 'asc')->paginate(10);//--------------------
-        $title = Title::where('user_id', Auth::user()->id)->first();//------------------------------
+        $titles = Title::where('user_id', Auth::user()->id)->first();//------------------------------
         return view('records', [
             'sort' => $sort,
             'keyword' => '',
             'records' => $records,
-            'title' => $title
+            'titles' => $titles
         ]);
     }
 
@@ -88,9 +88,9 @@ class RecordsController extends Controller
 
         //Eloquentモデル（保存処理）
         $records = new Record;
-        $title = Title::where('user_id', Auth::user()->id)->first();//------------------------------
+        $titles = Title::where('user_id', Auth::user()->id)->first();//------------------------------
         $records->user_id = Auth::user()->id;
-        $records->title_id = $title->id;
+        $records->title_id = $titles->id;
         $records->date = $request->date;
         $records->amount = $request->amount;
         $records->comment = $request->comment;
@@ -115,9 +115,9 @@ class RecordsController extends Controller
 
         $records = $query->orderBy($sort, 'asc')->paginate(10);
 
-        $title = Title::where('user_id', Auth::user()->id)->first();//------------------------------
+        $titles = Title::where('user_id', Auth::user()->id)->first();//------------------------------
 
-        return view('records', compact('sort', 'records', 'keyword', 'title'));
+        return view('records', compact('sort', 'records', 'keyword', 'titles'));
     }
 
     // 測定値編集画面表示
