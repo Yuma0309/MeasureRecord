@@ -17,35 +17,6 @@ class RecordsController extends Controller
         //ログイン認証後にだけ表示
         $this->middleware('auth');
     }
-
-    // タイトル保存画面表示（タイトルが1つもない場合に表示させる）
-    public function title() {
-        return view('titles');
-    }
-    
-    // タイトル保存処理
-    public function titlestore(Request $request){
-        // バリデーション
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|min:1|max:30',
-        ]);
-
-        //バリデーション：エラー
-        if ($validator->fails()) {
-            return redirect('/titles')
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-        //Eloquentモデル（保存処理）
-        $titles = new Title;
-        $titles->user_id = Auth::user()->id;
-        $titles->title = $request->title;
-        $titles->save();
-        return redirect('/')->with('message', 'タイトルを保存しました');
-    }
-    
-    // --------------------------------------------------------------------------------------------
     
     // 測定値一覧表示
     public function index(Request $request){

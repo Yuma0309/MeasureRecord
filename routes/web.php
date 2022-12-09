@@ -16,10 +16,12 @@ use Illuminate\Http\Request;
 */
 
 // タイトル保存画面
-Route::get('/titles', 'App\Http\Controllers\RecordsController@title');
+Route::get('/titles', 'App\Http\Controllers\TitlesController@title');
 
 // タイトル保存処理
-Route::post('/titles/store', 'App\Http\Controllers\RecordsController@titlestore');
+Route::post('/titles/store', 'App\Http\Controllers\TitlesController@titlestore');
+
+// ------------------------------------------------------------------------------------------
 
 // 測定値一覧画面
 Route::get('/', 'App\Http\Controllers\RecordsController@index');
@@ -38,6 +40,8 @@ Route::post('/records/update', 'App\Http\Controllers\RecordsController@update');
 
 // 測定値削除処理
 Route::delete('/record/{record}', 'App\Http\Controllers\RecordsController@destroy');
+
+// ------------------------------------------------------------------------------------------
 
 //Auth
 Auth::routes();
