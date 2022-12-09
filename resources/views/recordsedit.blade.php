@@ -6,19 +6,19 @@
     @include('common.errors')
     <form action="{{ url('records/update') }}" method="POST">
 
-        <!-- date -->
+        <!-- 日付 -->
         <div class="form-group">
             <label for="date">日付</label>
             <input type="date" name="date" class="form-control" value="{{$record->date}}"/>
         </div>
 
-        <!-- amount -->
+        <!-- 測定値 -->
         <div class="form-group">
             <label for="amount">測定値</label>
             <input type="text" name="amount" class="form-control" value="{{$record->amount}}">
         </div>
 
-        <!-- comment -->
+        <!-- コメント -->
         <div class="form-group">
             <label for="comment">コメント</label>
             <input type="text" name="comment" class="form-control" value="{{$record->comment}}">

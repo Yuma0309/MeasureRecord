@@ -21,6 +21,9 @@ Route::get('/titles', 'App\Http\Controllers\TitlesController@title');
 // タイトル保存処理
 Route::post('/titles/store', 'App\Http\Controllers\TitlesController@titlestore');
 
+// タイトル画面
+Route::post('/titlesindex/{titles}', 'App\Http\Controllers\TitlesController@titleindex');
+
 // ------------------------------------------------------------------------------------------
 
 // 測定値一覧画面

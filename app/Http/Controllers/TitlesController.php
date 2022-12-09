@@ -45,4 +45,10 @@ class TitlesController extends Controller
         return redirect('/')->with('message', 'タイトルを保存しました');
     }
 
+    // タイトル画面表示
+    public function titleindex($title_id) {
+        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+        return view('titlesindex', ['titles' => $titles]);
+    }
+
 }

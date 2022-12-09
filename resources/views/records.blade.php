@@ -5,7 +5,12 @@
 
 
     <!-- タイトル -->
-        <div>{{ $titles->title }}</div>
+        <form action="{{ url('titlesindex/'.$titles->id) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary">
+                <div>{{ $titles->title }}</div>
+            </button>
+        </form>
 
     <!-- Bootstrapの定形コード… -->
     <div class="card-body">

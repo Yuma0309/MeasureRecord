@@ -6,7 +6,7 @@
     @include('common.errors')
     <form action="{{ url('titles/store') }}" method="POST">
         
-        <!-- title -->
+        <!-- タイトル -->
         <div class="form-group col-md-6 m-2">
             <label for="comment" class="col-sm-3 control-label">タイトル</label>
             <input type="text" name="title" class="form-control">
