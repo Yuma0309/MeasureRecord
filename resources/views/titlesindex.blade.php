@@ -30,6 +30,9 @@
             <button type="submit" class="btn btn-danger">
                 削除
             </button>
+            <a class="btn btn-link pull-right" href="{{ url('/') }}">
+                キャンセル
+            </a>
         </form>
         
     </div>

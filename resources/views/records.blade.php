@@ -5,11 +5,11 @@
 
 
     <!-- タイトル -->
-        <form action="{{ url('titlesindex/'.$titles->id) }}" method="POST">
+        <form method="POST">
             @csrf
-            <button type="submit" class="btn btn-primary">
-                <div>{{ $titles->title }}</div>
-            </button>
+            <a class="btn btn-link pull-right" href="{{ url('titlesindex/'.$titles->id) }}">
+                {{ $titles->title }}
+            </a>
         </form>
 
     <!-- Bootstrapの定形コード… -->

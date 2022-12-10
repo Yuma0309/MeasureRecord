@@ -51,4 +51,16 @@ class TitlesController extends Controller
         return view('titlesindex', ['titles' => $titles]);
     }
 
+    // タイトル追加画面表示
+    public function titleadd($title_id) {
+        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+        return view('titlesadd', ['titles' => $titles]);
+    }
+
+    // タイトル更新画面表示
+    // public function titleedit($title_id) {
+    //     $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+    //     return view('titlesedit', ['titles' => $titles]);
+    // }
+
 }
