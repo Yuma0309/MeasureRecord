@@ -67,7 +67,7 @@ class TitlesController extends Controller
 
         //バリデーション：エラー
         if ($validator->fails()) {
-            return redirect('/')
+            return redirect('/titlesadd')
                 ->withInput()
                 ->withErrors($validator);
         }
@@ -77,7 +77,7 @@ class TitlesController extends Controller
         $titles->user_id = Auth::user()->id;
         $titles->title = $request->title;
         $titles->save();
-        return redirect('/')->with('message', 'タイトルを保存しました');
+        return redirect('/titlesindex')->with('message', 'タイトルを保存しました');
     }
 
     // タイトル編集画面表示
@@ -106,6 +106,12 @@ class TitlesController extends Controller
         $titles->title = $request->title;
         $titles->save();
         return redirect('/titlesindex')->with('message', 'タイトルを保存しました');
+    }
+
+    // タイトル削除処理
+    public function titledestroy(Title $title) {
+        $title->delete();
+        return redirect('/titlesindex');
     }
 
 }
