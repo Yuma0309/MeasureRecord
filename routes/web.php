@@ -22,7 +22,7 @@ Route::get('/titles', 'App\Http\Controllers\TitlesController@title');
 Route::post('/titles/store', 'App\Http\Controllers\TitlesController@titlestore');
 
 // タイトル画面
-Route::get('/titlesindex/{titles}', 'App\Http\Controllers\TitlesController@titleindex');
+Route::get('/titlesindex', 'App\Http\Controllers\TitlesController@titleindex');
 
 // タイトル追加画面
 Route::get('/titlesadd', 'App\Http\Controllers\TitlesController@titleaddindex');

@@ -46,9 +46,11 @@ class TitlesController extends Controller
     }
 
     // タイトル画面表示
-    public function titleindex($title_id) {
-        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
-        return view('titlesindex', ['titles' => $titles]);
+    public function titleindex() {
+        $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);;
+        return view('titlesindex', [
+            'titles' => $titles
+        ]);
     }
 
     // タイトル追加画面表示

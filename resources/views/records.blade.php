@@ -7,7 +7,7 @@
     <!-- タイトル -->
         <form method="POST">
             @csrf
-            <a class="btn btn-link pull-right" href="{{ url('titlesindex/'.$titles->id) }}">
+            <a class="btn btn-link pull-right" href="{{ url('titlesindex') }}">
                 {{ $titles->title }}
             </a>
         </form>
