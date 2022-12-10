@@ -8,7 +8,7 @@
 
             <!-- タイトル -->
             <div class="form-group col-md-6 m-2">
-                <label for="comment" class="col-sm-3 control-label">タイトル</label>
+                <label for="title" class="col-sm-3 control-label">タイトル</label>
                 <input type="text" name="title" class="form-control">
             </div>
 

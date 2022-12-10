@@ -80,10 +80,10 @@ class TitlesController extends Controller
         return redirect('/')->with('message', 'タイトルを保存しました');
     }
 
-    // タイトル更新画面表示
-    // public function titleedit($title_id) {
-    //     $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
-    //     return view('titlesedit', ['titles' => $titles]);
-    // }
+    // タイトル編集画面表示
+    public function titleedit($title_id) {
+        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+        return view('titlesedit', ['title' => $titles]);
+    }
 
 }

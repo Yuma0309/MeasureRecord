@@ -31,7 +31,7 @@ Route::get('/titlesadd', 'App\Http\Controllers\TitlesController@titleaddindex');
 Route::post('/titlesadd/store', 'App\Http\Controllers\TitlesController@titleadd');
 
 // タイトル編集画面
-// Route::get('/titlesedit/{titles}', 'App\Http\Controllers\TitlesController@titleedit');
+Route::post('/titlesedit/{titles}', 'App\Http\Controllers\TitlesController@titleedit');
 
 // ------------------------------------------------------------------------------------------
 
