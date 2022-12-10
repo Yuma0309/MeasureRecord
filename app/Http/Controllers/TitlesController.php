@@ -86,4 +86,26 @@ class TitlesController extends Controller
         return view('titlesedit', ['title' => $titles]);
     }
 
+    // タイトル編集処理
+    public function titleupdate(Request $request){
+        // バリデーション
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'title' => 'required|min:1|max:30',
+        ]);
+
+        // バリデーション：エラー
+        if ($validator->fails()) {
+            return redirect('/titlesindex')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        // データ編集
+        $titles = Title::where('user_id', Auth::user()->id)->find($request->id);
+        $titles->title = $request->title;
+        $titles->save();
+        return redirect('/titlesindex')->with('message', 'タイトルを保存しました');
+    }
+
 }

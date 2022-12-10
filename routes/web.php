@@ -33,6 +33,9 @@ Route::post('/titlesadd/store', 'App\Http\Controllers\TitlesController@titleadd'
 // タイトル編集画面
 Route::post('/titlesedit/{titles}', 'App\Http\Controllers\TitlesController@titleedit');
 
+// タイトル編集処理
+Route::post('/titles/update', 'App\Http\Controllers\TitlesController@titleupdate');
+
 // ------------------------------------------------------------------------------------------
 
 // 測定値一覧画面
