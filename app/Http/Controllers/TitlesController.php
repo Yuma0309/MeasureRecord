@@ -52,9 +52,30 @@ class TitlesController extends Controller
     }
 
     // タイトル追加画面表示
-    public function titleadd($title_id) {
-        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
-        return view('titlesadd', ['titles' => $titles]);
+    public function titleaddindex() {
+        return view('titlesadd');
+    }
+
+    // タイトル追加処理
+    public function titleadd(Request $request){
+        // バリデーション
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|min:1|max:30',
+        ]);
+
+        //バリデーション：エラー
+        if ($validator->fails()) {
+            return redirect('/')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        //Eloquentモデル（保存処理）
+        $titles = new Title;
+        $titles->user_id = Auth::user()->id;
+        $titles->title = $request->title;
+        $titles->save();
+        return redirect('/')->with('message', 'タイトルを保存しました');
     }
 
     // タイトル更新画面表示

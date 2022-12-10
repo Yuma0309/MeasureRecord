@@ -25,8 +25,10 @@ Route::post('/titles/store', 'App\Http\Controllers\TitlesController@titlestore')
 Route::get('/titlesindex/{titles}', 'App\Http\Controllers\TitlesController@titleindex');
 
 // タイトル追加画面
-Route::post('/titlesadd/{titles}', 'App\Http\Controllers\TitlesController@titleadd');
+Route::get('/titlesadd', 'App\Http\Controllers\TitlesController@titleaddindex');
 
+// タイトル追加処理
+Route::post('/titlesadd/store', 'App\Http\Controllers\TitlesController@titleadd');
 
 // タイトル編集画面
 // Route::get('/titlesedit/{titles}', 'App\Http\Controllers\TitlesController@titleedit');

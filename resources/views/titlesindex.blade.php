@@ -9,11 +9,11 @@
     <div class="col-md-12">
         @include('common.errors')
 
-        <form action="{{ url('titlesadd/'.$titles->id) }}" method="POST">
+        <form method="POST">
             @csrf
-            <button type="submit" class="btn btn-primary">
+            <a class="btn btn-link pull-right" href="{{ url('titlesadd') }}">
                 追加
-            </button>
+            </a>
         </form>
 
         <form action="{{ url('titlesedit/'.$titles->id) }}" method="POST">
