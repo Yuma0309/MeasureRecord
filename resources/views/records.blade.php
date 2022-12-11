@@ -1,16 +1,18 @@
 
 <!-- resources/views/records.blade.php -->
 @extends('layouts.app')
+
 @section('content')
 
-
     <!-- タイトル -->
-        <form method="POST">
-            @csrf
-            <a class="btn btn-link pull-right" href="{{ url('titlesindex') }}">
-                {{ $titles->title }}
-            </a>
-        </form>
+    <form method="POST">
+        @csrf
+        <a class="btn btn-link pull-right" href="{{ url('titlesindex') }}">
+            {{ $titles->title }}
+        </a>
+        <!-- id値を送信 -->
+        <input type="hidden" name="id" value="{{$titles->id}}">
+    </form>
 
     <!-- Bootstrapの定形コード… -->
     <div class="card-body">
@@ -48,6 +50,8 @@
                     <button type="submit" class="btn btn-primary m-2">
                         保存
                     </button>
+                    <!-- id値を送信 -->
+                    <input type="hidden" name="id" value="{{$titles->id}}">
                 </div>
             </div>
         </form>
@@ -65,6 +69,8 @@
             @csrf
             <input type="text" name="keyword" value="{{ $keyword }}">
             <input type="submit" value="検索">
+            <!-- id値を送信 -->
+            <input type="hidden" name="id" value="{{$titles->id}}">
         </form>
     </div>
 
@@ -79,9 +85,38 @@
                             <th>測定値一覧</th>
                             <th>&nbsp;</th>
                             <tr>
-                                <th><a href="/home?sort=date">日付</a></th>
-                                <th><a href="/home?sort=amount">測定値</a></th>
-                                <th><a href="/home?sort=comment">コメント</a></th>
+
+                                <th>
+                                    <form action="{{ url('/?sort=date') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">
+                                            日付
+                                        </button>
+                                        <!-- id値を送信 -->
+                                        <input type="hidden" name="id" value="{{$titles->id}}">
+                                    </form>
+                                </th>
+
+                                <th>
+                                    <form action="{{ url('/?sort=amount') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">
+                                            測定値
+                                        </button>
+                                        <!-- id値を送信 -->
+                                        <input type="hidden" name="id" value="{{$titles->id}}">
+                                    </form>
+                                </th>
+                                <th>
+                                    <form action="{{ url('/?sort=comment') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary">
+                                            コメント
+                                        </button>
+                                        <!-- id値を送信 -->
+                                        <input type="hidden" name="id" value="{{$titles->id}}">
+                                    </form>
+                                </th>
                             </tr>
                         </thead>
                         <!-- テーブル本体 -->

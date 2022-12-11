@@ -47,7 +47,7 @@ class TitlesController extends Controller
 
     // タイトル画面表示
     public function titleindex() {
-        $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);;
+        $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
         return view('titlesindex', [
             'titles' => $titles
         ]);
@@ -94,23 +94,37 @@ class TitlesController extends Controller
             'title' => 'required|min:1|max:30',
         ]);
 
+        $id = $request->id;
+
+        $title = Title::where('user_id', Auth::user()->id)->find($id);
+
         // バリデーション：エラー
         if ($validator->fails()) {
-            return redirect('/titlesindex')
-                ->withInput()
-                ->withErrors($validator);
+            return view('titlesedit', [
+                'title' => $title
+            ])->withErrors($validator);
         }
 
         // データ編集
-        $titles = Title::where('user_id', Auth::user()->id)->find($request->id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($id);
         $titles->title = $request->title;
         $titles->save();
-        return redirect('/titlesindex')->with('message', 'タイトルを保存しました');
+
+        $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
+    
+        session()->flash('message', 'タイトルを保存しました');
+
+        return view('titlesindex', [
+            'titles' => $titles
+        ]);
     }
 
     // タイトル削除処理
     public function titledestroy(Title $title) {
         $title->delete();
+
+        session()->flash('message', 'タイトルを削除しました');
+
         return redirect('/titlesindex');
     }
 

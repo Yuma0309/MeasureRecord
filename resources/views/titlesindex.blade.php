@@ -5,22 +5,20 @@
     <div class="row container">
         <div class="col-md-12">
             @include('common.errors')
-
             <form method="POST">
                 @csrf
                 <a class="btn btn-link pull-right" href="{{ url('titlesadd') }}">
                     追加
                 </a>
-            </form>
-
-            <form method="POST">
-                <a class="btn btn-link pull-right" href="{{ url('/') }}">
-                    キャンセル
-                </a>
-            </form>
-            
+            </form>            
         </div>
     </div>
+
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
 
     <!-- タイトル一覧 -->
     @if (isset($titles))
@@ -39,7 +37,12 @@
                                 <tr>
                                     <!-- タイトル -->
                                     <td class="table-text">
-                                        <div>{{ $title->title }}</div>
+                                        <form action="{{ url('/') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="btn btn-primary">{{ $title->title }}</button>
+                                            <!-- id値を送信 -->
+                                            <input type="hidden" name="id" value="{{$title->id}}">
+                                        </form>
                                     </td>
 
                                     <!-- 編集ボタン -->

@@ -43,6 +43,7 @@ Route::delete('/title/{title}', 'App\Http\Controllers\TitlesController@titledest
 
 // 測定値一覧画面
 Route::get('/', 'App\Http\Controllers\RecordsController@index');
+Route::post('/', 'App\Http\Controllers\RecordsController@index');
 
 // 測定値保存処理
 Route::post('/records', 'App\Http\Controllers\RecordsController@store');

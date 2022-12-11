@@ -5,6 +5,7 @@
     <div class="col-md-12">
         @include('common.errors')
         <form action="{{ url('titlesadd/store') }}" method="POST">
+            @csrf
 
             <!-- タイトル -->
             <div class="form-group col-md-6 m-2">
@@ -15,14 +16,11 @@
             <!-- 保存ボタン/キャンセルボタン -->
             <div class="well well-sm">
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a class="btn btn-link pull-right" href="{{ url('/') }}">
+                <a class="btn btn-link pull-right" href="{{ url('/titlesindex') }}">
                     キャンセル
                 </a>
             </div>
 
-            <!-- CSRF -->
-            @csrf
-            
         </form>
     </div>
 </div>
