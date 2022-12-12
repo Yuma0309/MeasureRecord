@@ -10,7 +10,7 @@
                 <a class="btn btn-link pull-right" href="{{ url('titlesadd') }}">
                     追加
                 </a>
-            </form>            
+            </form>
         </div>
     </div>
 

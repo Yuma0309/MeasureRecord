@@ -169,7 +169,10 @@
             <!-- ぺジネーション -->
             <div class="row">
                 <div class="col-md-4 offset-md-4">
-                    {{ $records->appends(['sort' => $sort])->links()}}
+                    {{ $records->appends([
+                        'id' => $titles->id,
+                        'sort' => $sort
+                    ])->links()}}
                 </div>
             </div>
             

@@ -80,12 +80,7 @@ class RecordsController extends Controller
 
         //バリデーション：エラー
         if ($validator->fails()) {
-            return view('records', [
-                'sort' => $sort,
-                'keyword' => '',
-                'records' => $records,
-                'titles' => $titles
-            ])->withErrors($validator);
+            return redirect('/?id='.$titles->id)->withErrors($validator);
         }        
 
         //Eloquentモデル（保存処理）
@@ -104,12 +99,7 @@ class RecordsController extends Controller
         
         session()->flash('message', '保存しました');
         
-        return view('records', [
-            'keyword' => '',
-            'titles' => $titles,
-            'sort' => $sort,
-            'records' => $records
-        ]);
+        return redirect('/?id='.$titles->id);
     }
 
     // 測定値検索処理
@@ -126,12 +116,14 @@ class RecordsController extends Controller
         $query = Record::query();
 
         if(!empty($keyword)) {
-            $query->where('date', 'LIKE', "%{$keyword}%")
+            $query->where('user_id', Auth::user()->id)
+                ->where('title_id', $id)
+                ->where('date', 'LIKE', "%{$keyword}%")
                 ->orWhere('amount', 'LIKE', "%{$keyword}%")
                 ->orWhere('comment', 'LIKE', "%{$keyword}%");
         }
 
-        $records = $query->where('user_id', Auth::user()->id)->where('title_id', $id)->orderBy($sort, 'asc')->paginate(10);
+        $records = $query->where('user_id', Auth::user()->id)->where('title_id', $id)->orderBy($sort, 'asc')->paginate(10000);
 
         session()->flash('message', '検索しました');
 
@@ -201,12 +193,7 @@ class RecordsController extends Controller
         
         session()->flash('message', '保存しました');
 
-        return view('records', [
-            'keyword' => '',
-            'titles' => $titles,
-            'sort' => $sort,
-            'records' => $records
-        ]);
+        return redirect('/?id='.$titles->id);
     }
 
     // 測定値削除処理
@@ -231,12 +218,7 @@ class RecordsController extends Controller
 
         session()->flash('message', '削除しました');
 
-        return view('records', [
-            'keyword' => '',
-            'titles' => $titles,
-            'sort' => $sort,
-            'records' => $records
-        ]);
+        return redirect('/?id='.$titles->id);
     }
     
 }

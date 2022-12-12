@@ -114,9 +114,7 @@ class TitlesController extends Controller
     
         session()->flash('message', 'タイトルを保存しました');
 
-        return view('titlesindex', [
-            'titles' => $titles
-        ]);
+        return redirect('/titlesindex?id='.$title->id);
     }
 
     // タイトル削除処理
