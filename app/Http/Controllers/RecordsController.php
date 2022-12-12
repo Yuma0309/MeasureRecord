@@ -113,22 +113,20 @@ class RecordsController extends Controller
 
         $sort = 'created_at';
 
-        $query = Record::query();
-
-        if(!empty($keyword)) {
-            $query->where('user_id', Auth::user()->id)
-                ->where('title_id', $id)
-                ->where('date', 'LIKE', "%{$keyword}%")
-                ->orWhere('amount', 'LIKE', "%{$keyword}%")
-                ->orWhere('comment', 'LIKE', "%{$keyword}%");
-        }
-
-        $records = $query->where('user_id', Auth::user()->id)->where('title_id', $id)->orderBy($sort, 'asc')->paginate(10000);
+        $records = Record::where('user_id', Auth::user()->id)
+                        ->where('title_id', $id)
+                        ->where(function ($query) use ($keyword) {
+                            $query->where('date', 'LIKE', "%{$keyword}%")
+                                ->orWhere('amount', 'LIKE', "%{$keyword}%")
+                                ->orWhere('comment', 'LIKE', "%{$keyword}%");
+                        })
+                        ->orderBy($sort, 'asc')
+                        ->paginate(10000);
 
         session()->flash('message', '検索しました');
 
         return view('records', [
-            'keyword' => '',
+            'keyword' => $keyword,
             'titles' => $titles,
             'sort' => $sort,
             'records' => $records
