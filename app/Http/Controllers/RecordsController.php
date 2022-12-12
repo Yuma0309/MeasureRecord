@@ -34,6 +34,7 @@ class RecordsController extends Controller
         // タイトルがnullの場合、最初の1レコードを表示
         if (is_null($titles)) { //$sortの初期値（値がない場合）
             $titles = Title::where('user_id', Auth::user()->id)->first();
+            $id = $titles->id;
         }
 
         $sort = $request->sort;
