@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->bigInteger('title_id');
-            $table->datetime('date');
+            $table->date('date');
             $table->decimal('amount', 10, 1);
             $table->text('comment');
             $table->timestamps();

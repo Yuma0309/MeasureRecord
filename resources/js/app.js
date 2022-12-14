@@ -6,6 +6,10 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
+import './chartjs';
+import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js';
+import 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js';
+import 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/locale/ja.js';
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin

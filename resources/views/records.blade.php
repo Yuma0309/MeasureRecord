@@ -74,6 +74,11 @@
         </form>
     </div>
 
+    <!-- 折れ線グラフ -->
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+
     <!-- 測定値一覧 -->
     @if (isset($records))
         @if (count($records) > 0)

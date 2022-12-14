@@ -46,6 +46,16 @@ class RecordsController extends Controller
             ->where('title_id', $id)
             ->orderBy($sort, 'asc')
             ->paginate(10);
+        
+        for ($i = 0; $i < count($records); $i++) {
+            $date[] = $records[$i]->date;
+        }
+        for ($i = 0; $i < count($records); $i++) {
+            $amount[] = $records[$i]->amount;
+        }
+
+        session(['date' => $date]);
+        session(['amount' => $amount]);
 
         return view('records', [
             'keyword' => '',
@@ -53,6 +63,19 @@ class RecordsController extends Controller
             'sort' => $sort,
             'records' => $records
         ]);
+    }
+    
+    // チャートデータを取得
+    public function chartGet(){
+        $date = session('date');
+        $amount = session('amount');
+        
+        return [
+            [
+                'date' => $date, 
+                'amount' => $amount, 
+            ]
+        ];
     }
 
     // 測定値保存処理
