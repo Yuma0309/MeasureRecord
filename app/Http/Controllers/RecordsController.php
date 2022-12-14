@@ -44,7 +44,7 @@ class RecordsController extends Controller
 
         $records = Record::where('user_id', Auth::user()->id)
             ->where('title_id', $id)
-            ->orderBy($sort, 'asc')
+            ->orderBy('date', 'asc')
             ->paginate(10);
         
         for ($i = 0; $i < count($records); $i++) {
@@ -53,6 +53,11 @@ class RecordsController extends Controller
         for ($i = 0; $i < count($records); $i++) {
             $amount[] = $records[$i]->amount;
         }
+
+        $records = Record::where('user_id', Auth::user()->id)
+            ->where('title_id', $id)
+            ->orderBy($sort, 'desc')
+            ->paginate(10);
 
         session(['date' => $date]);
         session(['amount' => $amount]);
