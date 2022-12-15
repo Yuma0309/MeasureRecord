@@ -6,11 +6,11 @@ window.onload = function() {
     const myChart = new Chart(ctx, {
         type: "line",
         data: {
-            // labels: コントローラから取得
+            // labels: ,コントローラから取得
             datasets: [
                 {
-                    label: "data 1",
-                    // data: コントローラから取得
+                    // label: ,コントローラから取得
+                    // data: ,コントローラから取得
                     borderColor: "rgb(75, 192, 192)",
                     backgroundColor: "rgba(75, 192, 192, 0.5)",
                 },
@@ -25,6 +25,7 @@ window.onload = function() {
             console.log(response.data);
             // Chartの更新
             myChart.data.labels = response.data.date;
+            myChart.data.datasets[0].label = response.data.title_name;
             myChart.data.datasets[0].data = response.data.amount;
             myChart.update();
         })

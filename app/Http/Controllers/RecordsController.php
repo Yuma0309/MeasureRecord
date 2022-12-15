@@ -45,18 +45,22 @@ class RecordsController extends Controller
         $records = Record::where('user_id', Auth::user()->id)
             ->where('title_id', $id)
             ->orderBy('date', 'asc')
-            ->paginate(10);
+            ->get();
         
         $date = [];
         $amount = [];
+        $title_name = [];
 
-        for ($i = 0; $i < count($records); $i++) {
+        for ($i = 0; $i < count($records); $i++) { // 配列$dateと$amountに$records->dateと$records->amountの値をそれぞれ入れる
             $date[] = $records[$i]->date;
             $amount[] = $records[$i]->amount;
         }
 
+        $title_name[] = $titles->title;
+
         session(['date' => $date]);
         session(['amount' => $amount]);
+        session(['title_name' => $title_name]);
 
         $records = Record::where('user_id', Auth::user()->id)
             ->where('title_id', $id)
@@ -75,9 +79,11 @@ class RecordsController extends Controller
     public function chartGet(){
         $date = session('date');
         $amount = session('amount');
+        $title_name = session('title_name');
         return [
             'date' => $date, 
-            'amount' => $amount
+            'amount' => $amount,
+            'title_name' => $title_name
         ];
     }
 
