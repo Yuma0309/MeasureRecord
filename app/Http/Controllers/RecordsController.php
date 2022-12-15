@@ -47,20 +47,21 @@ class RecordsController extends Controller
             ->orderBy('date', 'asc')
             ->paginate(10);
         
+        $date = [];
+        $amount = [];
+
         for ($i = 0; $i < count($records); $i++) {
             $date[] = $records[$i]->date;
-        }
-        for ($i = 0; $i < count($records); $i++) {
             $amount[] = $records[$i]->amount;
         }
+
+        session(['date' => $date]);
+        session(['amount' => $amount]);
 
         $records = Record::where('user_id', Auth::user()->id)
             ->where('title_id', $id)
             ->orderBy($sort, 'desc')
             ->paginate(10);
-
-        session(['date' => $date]);
-        session(['amount' => $amount]);
 
         return view('records', [
             'keyword' => '',
@@ -74,12 +75,9 @@ class RecordsController extends Controller
     public function chartGet(){
         $date = session('date');
         $amount = session('amount');
-        
         return [
-            [
-                'date' => $date, 
-                'amount' => $amount, 
-            ]
+            'date' => $date, 
+            'amount' => $amount
         ];
     }
 
