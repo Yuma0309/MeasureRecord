@@ -10,12 +10,13 @@ window.onload = function() {
             datasets: [
                 {
                     // label: ,コントローラから取得
+                    spanGaps : true,
                     // data: ,コントローラから取得
                     borderColor: "rgb(75, 192, 192)",
                     backgroundColor: "rgba(75, 192, 192, 0.5)",
                 },
             ],
-        }
+        },
     });
 
     // Laravelのチャートデータ取得処理の呼び出し
