@@ -45,6 +45,12 @@
                                         </form>
                                     </td>
 
+                                    <td>
+                                        <div>
+                                            測定値の単位：{{ $title->unit }}
+                                        </div>
+                                    </td>
+
                                     <!-- 編集ボタン -->
                                     <td>
                                         <form action="{{ url('titlesedit/'.$title->id) }}" method="POST">

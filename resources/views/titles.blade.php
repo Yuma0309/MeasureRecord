@@ -12,7 +12,13 @@
                 <label for="title" class="col-sm-3 control-label">タイトル</label>
                 <input type="text" name="title" class="form-control">
             </div>
-            
+
+            <!-- 単位 -->
+            <div class="form-group col-md-6 m-2">
+                <label for="unit">測定値の単位</label>
+                <input type="text" name="unit" class="form-control">
+            </div>
+
             <!-- 保存ボタン -->
             <div class="form-row">
                 <div class="col-sm-offset-3 col-sm-6">
@@ -21,7 +27,7 @@
                     </button>
                 </div>
             </div>
-            
+
         </form>
     </div>
 </div>

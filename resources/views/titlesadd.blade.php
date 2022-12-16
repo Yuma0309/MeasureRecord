@@ -13,6 +13,12 @@
                 <input type="text" name="title" class="form-control">
             </div>
 
+            <!-- 単位 -->
+            <div class="form-group col-md-6 m-2">
+                <label for="unit">測定値の単位</label>
+                <input type="text" name="unit" class="form-control">
+            </div>
+
             <!-- 保存ボタン/キャンセルボタン -->
             <div class="well well-sm">
                 <button type="submit" class="btn btn-primary">保存</button>

@@ -12,6 +12,12 @@
                 <label for="title">タイトル</label>
                 <input type="text" name="title" class="form-control" value="{{$title->title}}"/>
             </div>
+
+            <!-- 単位 -->
+            <div class="form-group">
+                <label for="unit">タイトル</label>
+                <input type="text" name="unit" class="form-control" value="{{$title->unit}}"/>
+            </div>
             
             <!-- 保存ボタン/キャンセルボタン -->
             <div class="well well-sm">

@@ -17,7 +17,7 @@
     <!-- Bootstrapの定形コード… -->
     <div class="card-body">
         <div class="card-title">
-            測定値入力
+            測定値入力フォーム
         </div>
 
         <!-- バリデーションエラーの表示に使用 -->
@@ -76,6 +76,9 @@
 
     <!-- 折れ線グラフ -->
     <div>
+        <div>
+            ({{ $titles->unit }})
+        </div>
         <canvas id="myChart"></canvas>
     </div>
 
@@ -138,7 +141,7 @@
 
                                     <!-- 測定値 -->
                                     <td class="table-text">
-                                        <div>{{ $record->amount }}</div>
+                                        <div>{{ $record->amount }}{{ $titles->unit }}</div>
                                     </td>
 
                                     <!-- コメント -->

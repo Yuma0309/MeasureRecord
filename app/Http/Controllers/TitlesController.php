@@ -28,6 +28,7 @@ class TitlesController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:1|max:30',
+            'unit' => 'required|min:1|max:30',
         ]);
 
         //バリデーション：エラー
@@ -41,6 +42,7 @@ class TitlesController extends Controller
         $titles = new Title;
         $titles->user_id = Auth::user()->id;
         $titles->title = $request->title;
+        $titles->unit = $request->unit;
         $titles->save();
         return redirect('/')->with('message', 'タイトルを保存しました');
     }
@@ -63,6 +65,7 @@ class TitlesController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:1|max:30',
+            'unit' => 'required|min:1|max:30',
         ]);
 
         //バリデーション：エラー
@@ -76,6 +79,7 @@ class TitlesController extends Controller
         $titles = new Title;
         $titles->user_id = Auth::user()->id;
         $titles->title = $request->title;
+        $titles->unit = $request->unit;
         $titles->save();
         return redirect('/titlesindex')->with('message', 'タイトルを保存しました');
     }
@@ -92,6 +96,7 @@ class TitlesController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'title' => 'required|min:1|max:30',
+            'unit' => 'required|min:1|max:30',
         ]);
 
         $id = $request->id;
@@ -108,6 +113,7 @@ class TitlesController extends Controller
         // データ編集
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
         $titles->title = $request->title;
+        $titles->unit = $request->unit;
         $titles->save();
 
         $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
