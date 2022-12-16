@@ -99,6 +99,7 @@
                                         </button>
                                         <!-- id値を送信 -->
                                         <input type="hidden" name="id" value="{{$titles->id}}">
+                                        <input type="hidden" name="sort_number" value="{{$sort_number}}">
                                     </form>
                                 </th>
 
@@ -110,6 +111,7 @@
                                         </button>
                                         <!-- id値を送信 -->
                                         <input type="hidden" name="id" value="{{$titles->id}}">
+                                        <input type="hidden" name="sort_number" value="{{$sort_number}}">
                                     </form>
                                 </th>
                                 <th>
@@ -120,6 +122,7 @@
                                         </button>
                                         <!-- id値を送信 -->
                                         <input type="hidden" name="id" value="{{$titles->id}}">
+                                        <input type="hidden" name="sort_number" value="{{$sort_number}}">
                                     </form>
                                 </th>
                             </tr>

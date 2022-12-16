@@ -38,11 +38,6 @@ class RecordsController extends Controller
             $id = $titles->id;
         }
 
-        $sort = $request->sort;
-        if (is_null($sort)) { //$sortの初期値（値がない場合）
-            $sort = 'created_at';
-        }
-
         $records = Record::where('user_id', Auth::user()->id)
             ->where('title_id', $id)
             ->orderBy('date', 'asc')
@@ -91,15 +86,35 @@ class RecordsController extends Controller
         session(['amount' => $amount]);
         session(['title_name' => $title_name]);
 
+        // ボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
+        $sort_number = $request->sort_number;
+        if (is_null($sort_number)) { //$sort_numberの初期値（値がない場合）
+            $sort_number = 0;
+            $sort_order = 'asc';
+        } else {
+            $sort_number = $sort_number + 1;
+            if ($sort_number % 2 == 0) {
+                $sort_order = 'desc';
+            } else {
+                $sort_order = 'asc';
+            }
+        }
+
+        $sort = $request->sort;
+        if (is_null($sort)) { //$sortの初期値（値がない場合）
+            $sort = 'created_at';
+        }
+
         $records = Record::where('user_id', Auth::user()->id)
             ->where('title_id', $id)
-            ->orderBy($sort, 'desc')
+            ->orderBy($sort, $sort_order)
             ->paginate(10);
 
         return view('records', [
             'keyword' => '',
             'titles' => $titles,
             'sort' => $sort,
+            'sort_number' => $sort_number,
             'records' => $records
         ]);
     }
