@@ -90,7 +90,7 @@ class RecordsController extends Controller
         $sort_number = $request->sort_number;
         if (is_null($sort_number)) { //$sort_numberの初期値（値がない場合）
             $sort_number = 0;
-            $sort_order = 'asc';
+            $sort_order = 'desc';
         } else {
             $sort_number = $sort_number + 1;
             if ($sort_number % 2 == 0) {

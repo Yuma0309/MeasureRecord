@@ -12,8 +12,8 @@ window.onload = function() {
                     // label: ,コントローラから取得
                     spanGaps : true,
                     // data: ,コントローラから取得
-                    borderColor: "rgb(75, 192, 192)",
-                    backgroundColor: "rgba(75, 192, 192, 0.5)",
+                    borderColor: "rgb(30, 144, 255)",
+                    backgroundColor: "rgba(135, 206, 250, 0.5)",
                 },
             ],
         },

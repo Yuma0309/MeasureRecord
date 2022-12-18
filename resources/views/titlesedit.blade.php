@@ -1,36 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row container">
-    <div class="col-md-12">
-        @include('common.errors')
-        <form action="{{ url('titles/update') }}" method="POST">
-            @csrf
+<div class="container">
+    <div class="row">
+        <div class="card">
+            <div class="card-body my-3">
+                <div style="font-size:15pt;font-weight:bold;" class="card-title mt-1 mb-4 mx-2">
+                    タイトル編集フォーム
+                </div>
+                <div class="col-md-10">
+                    @include('common.errors')
+                    <form action="{{ url('titles/update') }}" method="POST">
+                        @csrf
 
-            <!-- タイトル -->
-            <div class="form-group">
-                <label for="title">タイトル</label>
-                <input type="text" name="title" class="form-control" value="{{$title->title}}"/>
-            </div>
+                        <!-- タイトル -->
+                        <div class="form-group mt-1 mb-3 mx-2">
+                            <label for="title">
+                                タイトル
+                            </label>
+                            <input type="text" name="title" class="form-control" value="{{$title->title}}"/>
+                        </div>
 
-            <!-- 単位 -->
-            <div class="form-group">
-                <label for="unit">タイトル</label>
-                <input type="text" name="unit" class="form-control" value="{{$title->unit}}"/>
-            </div>
-            
-            <!-- 保存ボタン/キャンセルボタン -->
-            <div class="well well-sm">
-                <button type="submit" class="btn btn-primary">保存</button>
-                <a class="btn btn-link pull-right" href="{{ url('/titlesindex') }}">
-                    キャンセル
-                </a>
-            </div>
-            
-            <!-- id値を送信 -->
-            <input type="hidden" name="id" value="{{$title->id}}">
+                        <!-- 単位 -->
+                        <div class="form-group mt-1 mb-3 mx-2">
+                            <label for="unit">
+                                測定値の単位
+                            </label>
+                            <input type="text" name="unit" class="form-control" value="{{$title->unit}}"/>
+                        </div>
+                        
+                        <!-- 保存ボタン/キャンセルボタン -->
+                        <div>
+                            <button type="submit" class="btn btn-primary m-2">
+                                保存
+                            </button>
+                            <a href="{{ url('/titlesindex') }}" class="btn btn-outline-secondary m-2">
+                                キャンセル
+                            </a>
+                            <!-- id値を送信 -->
+                            <input type="hidden" name="id" value="{{$title->id}}">
+                        </div>
 
-        </form>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
