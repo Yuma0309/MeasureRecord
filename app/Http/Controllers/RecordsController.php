@@ -188,6 +188,8 @@ class RecordsController extends Controller
 
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
 
+        $sort_number = 0;
+
         $sort = 'created_at';
 
         $records = Record::where('user_id', Auth::user()->id)
@@ -206,6 +208,7 @@ class RecordsController extends Controller
             'keyword' => $keyword,
             'titles' => $titles,
             'sort' => $sort,
+            'sort_number' => $sort_number,
             'records' => $records
         ]);
     }
