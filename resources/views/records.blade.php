@@ -92,6 +92,8 @@
         <input type="submit" value="検索">
         <!-- id値を送信 -->
         <input type="hidden" name="id" value="{{$titles->id}}">
+        <input type="hidden" name="sort" value="{{$sort}}">
+        <input type="hidden" name="sort_number" value="{{$sort_number}}">
     </form>
 </div>
 
@@ -212,7 +214,8 @@
             {{ $records->appends([
                 'id' => $titles->id,
                 'sort' => $sort,
-                'sort_number' => $sort_number
+                'sort_number' => $sort_number,
+                'keyword' => $keyword
             ])->links()}}
         </div>
         

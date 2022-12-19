@@ -118,12 +118,30 @@ class RecordsController extends Controller
             ->where('title_id', $id)
             ->orderBy($sort, $sort_order)
             ->paginate(10);
+        
+        // $keywordに値があれば検索する
+        $keyword = $request->keyword;
+        if (is_null($keyword)) { //$keywordの初期値（値がない場合）
+            $keyword = '';
+        } else {
+            $records = Record::where('user_id', Auth::user()->id)
+                        ->where('title_id', $id)
+                        ->where(function ($query) use ($keyword) {
+                            $query->where('date', 'LIKE', "%{$keyword}%")
+                                ->orWhere('amount', 'LIKE', "%{$keyword}%")
+                                ->orWhere('comment', 'LIKE', "%{$keyword}%");
+                        })
+                        ->orderBy($sort, $sort_order)
+                        ->paginate(10);
+
+            session()->flash('message', '検索しました');
+        }
 
         return view('records', [
-            'keyword' => '',
             'titles' => $titles,
             'sort' => $sort,
             'sort_number' => $sort_number,
+            'keyword' => $keyword,
             'records' => $records
         ]);
     }
@@ -197,29 +215,11 @@ class RecordsController extends Controller
 
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
 
-        $sort = 'created_at';
+        $sort = $request->sort;
 
-        $sort_number = 0;
+        $sort_number = $request->sort_number;
 
-        $records = Record::where('user_id', Auth::user()->id)
-                        ->where('title_id', $id)
-                        ->where(function ($query) use ($keyword) {
-                            $query->where('date', 'LIKE', "%{$keyword}%")
-                                ->orWhere('amount', 'LIKE', "%{$keyword}%")
-                                ->orWhere('comment', 'LIKE', "%{$keyword}%");
-                        })
-                        ->orderBy($sort, 'asc')
-                        ->paginate(10000);
-
-        session()->flash('message', '検索しました');
-
-        return view('records', [
-            'keyword' => $keyword,
-            'titles' => $titles,
-            'sort' => $sort,
-            'sort_number' => $sort_number,
-            'records' => $records
-        ]);
+        return redirect('/?id='.$titles->id.'&sort='.$sort.'&sort_number='.$sort_number.'&keyword='.$keyword);
     }
 
     // 測定値編集画面表示
