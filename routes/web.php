@@ -55,7 +55,7 @@ Route::post('/records', 'App\Http\Controllers\RecordsController@store');
 Route::post('/records/search', 'App\Http\Controllers\RecordsController@search');
 
 // 測定値編集画面
-Route::post('/recordsedit/{records}', 'App\Http\Controllers\RecordsController@edit');
+Route::post('/recordsedit', 'App\Http\Controllers\RecordsController@edit');
 
 // 測定値編集処理
 Route::post('/records/update', 'App\Http\Controllers\RecordsController@update');

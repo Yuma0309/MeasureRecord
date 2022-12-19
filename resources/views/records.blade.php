@@ -185,11 +185,13 @@
 
                         <!-- 編集ボタン -->
                         <td class="text-center align-middle">
-                            <form action="{{ url('recordsedit/'.$record->id) }}" method="POST">
+                            <form action="{{ url('recordsedit') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-success">
                                     編集
                                 </button>
+                                <input type="hidden" name="record_id" value="{{$record->id}}">
+                                <input type="hidden" name="page" value="{{$page}}">
                             </form>
                         </td>
 

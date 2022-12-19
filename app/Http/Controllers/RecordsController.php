@@ -91,13 +91,14 @@ class RecordsController extends Controller
             $sort = 'created_at';
         }
 
+        $page = $request->page;
+
         // 測定値一覧の項目のボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
         $sort_number = $request->sort_number;
         if (is_null($sort_number)) { //$sort_numberの初期値（値がない場合）：'/'にリダイレクト後
             $sort_number = 0;
             $sort_order = 'desc';
         } else {
-            $page = $request->page;
             if (!is_numeric($page)) { //$pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
                 $sort_number = $sort_number + 1;
                 if ($sort_number % 2 == 0) {
@@ -142,7 +143,8 @@ class RecordsController extends Controller
             'sort' => $sort,
             'sort_number' => $sort_number,
             'keyword' => $keyword,
-            'records' => $records
+            'records' => $records,
+            'page' => $page
         ]);
     }
     
@@ -195,11 +197,6 @@ class RecordsController extends Controller
         $records->amount = $request->amount;
         $records->comment = $request->comment;
         $records->save();
-
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $id)
-            ->orderBy($sort, 'asc')
-            ->paginate(10);
         
         session()->flash('message', '保存しました');
         
@@ -223,7 +220,9 @@ class RecordsController extends Controller
     }
 
     // 測定値編集画面表示
-    public function edit($record_id) {
+    public function edit(Request $request) {
+
+        $record_id = $request->record_id;
 
         $records = Record::where('user_id', Auth::user()->id)->find($record_id);
 
@@ -231,9 +230,12 @@ class RecordsController extends Controller
 
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
 
+        $page = $request->page;
+
         return view('recordsedit', [
             'record' => $records,
-            'titles' => $titles
+            'titles' => $titles,
+            'page' => $page
         ]);
     }
     
@@ -258,11 +260,14 @@ class RecordsController extends Controller
 
         $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
 
+        $page = $request->page;
+
         // バリデーション：エラー
         if ($validator->fails()) {
             return view('recordsedit', [
                 'record' => $records,
-                'titles' => $titles
+                'titles' => $titles,
+                'page' => $page
             ])->withErrors($validator);
         }
 
@@ -272,15 +277,10 @@ class RecordsController extends Controller
         $records->amount = $request->amount;
         $records->comment = $request->comment;
         $records->save();
-
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $title_id)
-            ->orderBy($sort, 'asc')
-            ->paginate(10);
         
         session()->flash('message', '保存しました');
 
-        return redirect('/?id='.$titles->id);
+        return redirect('/?id='.$titles->id.'&page='.$page);
     }
 
     // 測定値削除処理
@@ -297,11 +297,6 @@ class RecordsController extends Controller
         $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
 
         $record->delete();
-
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $title_id)
-            ->orderBy($sort, 'asc')
-            ->paginate(10);
 
         session()->flash('message', '削除しました');
 

@@ -115,8 +115,6 @@ class TitlesController extends Controller
         $titles->title = $request->title;
         $titles->unit = $request->unit;
         $titles->save();
-
-        $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
     
         session()->flash('message', 'タイトルを保存しました');
 

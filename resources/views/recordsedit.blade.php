@@ -42,11 +42,12 @@
                             <button type="submit" class="btn btn-primary m-2">
                                 保存
                             </button>
-                            <a href="{{ url('/?id='.$titles->id) }}" class="btn btn-outline-secondary m-2">
+                            <a href="{{ url('/?id='.$titles->id.'&page='.$page) }}" class="btn btn-outline-secondary m-2">
                                 キャンセル
                             </a>
                             <!-- id値を送信 -->
                             <input type="hidden" name="id" value="{{$record->id}}">
+                            <input type="hidden" name="page" value="{{$page}}">
                         </div>
                         
                     </form>
