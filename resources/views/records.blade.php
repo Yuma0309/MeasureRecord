@@ -200,7 +200,7 @@
                             <form action="{{ url('record/'.$record->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger">
+                                <button type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>
                                     削除
                                 </button>
                             </form>
