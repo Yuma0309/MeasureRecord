@@ -128,9 +128,20 @@ class RecordsController extends Controller
             $records = Record::where('user_id', Auth::user()->id)
                         ->where('title_id', $id)
                         ->where(function ($query) use ($keyword) {
-                            $query->where('date', 'LIKE', "%{$keyword}%")
-                                ->orWhere('amount', 'LIKE', "%{$keyword}%")
-                                ->orWhere('comment', 'LIKE', "%{$keyword}%");
+
+                            // 全角スペースを半角に変換
+                            $spaceConversion = mb_convert_kana($keyword, 's');
+
+                            // 単語を半角スペースで区切り、配列にする（例："10 178" → ["10", "178"]）
+                            $wordArraySearched = preg_split('/[\s,、]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+                            // 単語をループで回し、レコードと部分一致するものがあれば、$queryとして保持される
+                            foreach($wordArraySearched as $value) {
+                                $query->where('date', 'LIKE', "%{$value}%")
+                                    ->orWhere('amount', 'LIKE', "%{$value}%")
+                                    ->orWhere('comment', 'LIKE', "%{$value}%");
+                            }
+
                         })
                         ->orderBy($sort, $sort_order)
                         ->paginate(10);
