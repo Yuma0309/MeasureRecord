@@ -86,23 +86,32 @@ class RecordsController extends Controller
         session(['amount' => $amount]);
         session(['title_name' => $title_name]);
 
-        // ボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
-        $sort_number = $request->sort_number;
-        if (is_null($sort_number)) { //$sort_numberの初期値（値がない場合）
-            $sort_number = 0;
-            $sort_order = 'desc';
-        } else {
-            $sort_number = $sort_number + 1;
-            if ($sort_number % 2 == 0) {
-                $sort_order = 'desc';
-            } else {
-                $sort_order = 'asc';
-            }
-        }
-
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）
             $sort = 'created_at';
+        }
+
+        // 測定値一覧の項目のボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
+        $sort_number = $request->sort_number;
+        if (is_null($sort_number)) { //$sort_numberの初期値（値がない場合）：'/'にリダイレクト後
+            $sort_number = 0;
+            $sort_order = 'desc';
+        } else {
+            $page = $request->page;
+            if (!is_numeric($page)) { //$pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
+                $sort_number = $sort_number + 1;
+                if ($sort_number % 2 == 0) {
+                    $sort_order = 'desc';
+                } else {
+                    $sort_order = 'asc';
+                }
+            } else { //$pageが数値の場合：ペジネーションのボタンを押すと自動的に$pageが数値になる
+                if ($sort_number % 2 == 0) {
+                    $sort_order = 'desc';
+                } else {
+                    $sort_order = 'asc';
+                }
+            }
         }
 
         $records = Record::where('user_id', Auth::user()->id)
@@ -188,9 +197,9 @@ class RecordsController extends Controller
 
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
 
-        $sort_number = 0;
-
         $sort = 'created_at';
+
+        $sort_number = 0;
 
         $records = Record::where('user_id', Auth::user()->id)
                         ->where('title_id', $id)

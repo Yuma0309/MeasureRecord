@@ -196,7 +196,6 @@
                             <form action="{{ url('record/'.$record->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                
                                 <button type="submit" class="btn btn-outline-danger">
                                     削除
                                 </button>
@@ -212,7 +211,8 @@
         <div class="pagination justify-content-center my-4">
             {{ $records->appends([
                 'id' => $titles->id,
-                'sort' => $sort
+                'sort' => $sort,
+                'sort_number' => $sort_number
             ])->links()}}
         </div>
         
