@@ -30,6 +30,9 @@ class RecordsController extends Controller
 
         $id = $request->id;
 
+        // chartGet関数に値を送る
+        session(['id' => $id]);
+
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
 
         // タイトルがnullの場合、最初の1レコードを表示
@@ -37,54 +40,6 @@ class RecordsController extends Controller
             $titles = Title::where('user_id', Auth::user()->id)->first();
             $id = $titles->id;
         }
-
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $id)
-            ->orderBy('date', 'asc')
-            ->get();
-        
-        // チャートデータを生成
-        $collection = collect($records);
-        $date_max = $collection->max('date');
-        $date_min = $collection->min('date');
-        $date_max_obj = new Carbon($date_max);
-        $date_min_obj = new Carbon($date_min);
-        $interval = $date_max_obj->diffInDays($date_min_obj, true);
-
-        if ($interval > 1) { // $records->dateの最大値と最小値の日にちの差が1日以上あれば実行
-            for ($i = 1; $i <= $interval; $i++) {
-                $date_min_obj->addDays(1);
-                $date_search = Record::where('user_id', Auth::user()->id)
-                    ->where('title_id', $id)
-                    ->where('date', $date_min_obj->format('Y-m-d'))
-                    ->get();
-                $collection = collect($date_search);
-                if ($collection->isEmpty()) { // $records->dateの最大値と最小値の日にちの間で、測定値がない日があればnullを入れる
-                    $number = count($records); // $recordsの個数はforで繰り返されるたびに増えていく
-                    $records[$number] = new Record;
-                    $records[$number]->date = $date_min_obj->format('Y-m-d');
-                    $records[$number]->amount = null;
-                }
-            }
-        }
-
-        $collection = collect($records);
-        $records = $collection->sortBy('date')->values(); // $recordsのオブジェクトを日付の昇順に並べ替える
-        
-        $date = []; // chartGet関数に値を渡すための配列を作成
-        $amount = [];
-        $title_name = [];
-
-        for ($i = 0; $i < count($records); $i++) { // 配列$dateと$amountに$records->dateと$records->amountの値をそれぞれ入れる
-            $date[] = $records[$i]->date;
-            $amount[] = $records[$i]->amount;
-        }
-
-        $title_name[] = $titles->title;
-
-        session(['date' => $date]);
-        session(['amount' => $amount]);
-        session(['title_name' => $title_name]);
 
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）
@@ -161,9 +116,54 @@ class RecordsController extends Controller
     
     // チャートデータを取得
     public function chartGet(){
-        $date = session('date');
-        $amount = session('amount');
-        $title_name = session('title_name');
+
+        $id = session('id');
+
+        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+
+        $records = Record::where('user_id', Auth::user()->id)
+            ->where('title_id', $id)
+            ->orderBy('date', 'asc')
+            ->get();
+        
+        $collection = collect($records);
+        $date_max = $collection->max('date');
+        $date_min = $collection->min('date');
+        $date_max_obj = new Carbon($date_max);
+        $date_min_obj = new Carbon($date_min);
+        $interval = $date_max_obj->diffInDays($date_min_obj, true);
+
+        if ($interval > 1) { // $records->dateの最大値と最小値の日にちの差が1日以上あれば実行
+            for ($i = 1; $i <= $interval; $i++) {
+                $date_min_obj->addDays(1);
+                $date_search = Record::where('user_id', Auth::user()->id)
+                    ->where('title_id', $id)
+                    ->where('date', $date_min_obj->format('Y-m-d'))
+                    ->get();
+                $collection = collect($date_search);
+                if ($collection->isEmpty()) { // $records->dateの最大値と最小値の日にちの間で、測定値がない日があればnullを入れる
+                    $number = count($records); // $recordsの個数はforで繰り返されるたびに増えていく
+                    $records[$number] = new Record;
+                    $records[$number]->date = $date_min_obj->format('Y-m-d');
+                    $records[$number]->amount = null;
+                }
+            }
+        }
+
+        $collection = collect($records);
+        $records = $collection->sortBy('date')->values(); // $recordsのオブジェクトを日付の昇順に並べ替える
+        
+        $date = []; // chartjs.jsに値を渡すための配列を作成
+        $amount = [];
+        $title_name = [];
+
+        for ($i = 0; $i < count($records); $i++) { // 配列$dateと$amountに$records->dateと$records->amountの値をそれぞれ入れる
+            $date[] = $records[$i]->date;
+            $amount[] = $records[$i]->amount;
+        }
+
+        $title_name[] = $titles->title;
+
         return [
             'date' => $date, 
             'amount' => $amount,
