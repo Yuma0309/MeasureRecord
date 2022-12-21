@@ -85,8 +85,8 @@ class TitlesController extends Controller
     }
 
     // タイトル編集画面表示
-    public function titleedit($title_id) {
-        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+    public function titleedit($titleId) {
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
         return view('titlesedit', ['title' => $titles]);
     }
 
@@ -99,9 +99,9 @@ class TitlesController extends Controller
             'unit' => 'required|min:1|max:30',
         ]);
 
-        $id = $request->id;
+        $titleId = $request->id;
 
-        $title = Title::where('user_id', Auth::user()->id)->find($id);
+        $title = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         // バリデーション：エラー
         if ($validator->fails()) {
@@ -111,7 +111,7 @@ class TitlesController extends Controller
         }
 
         // データ編集
-        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
         $titles->title = $request->title;
         $titles->unit = $request->unit;
         $titles->save();

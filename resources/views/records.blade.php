@@ -94,7 +94,7 @@
         <!-- id値を送信 -->
         <input type="hidden" name="id" value="{{$titles->id}}">
         <input type="hidden" name="sort" value="{{$sort}}">
-        <input type="hidden" name="sort_number" value="{{$sort_number}}">
+        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
     </form>
 </div>
 
@@ -119,7 +119,7 @@
                             </button>
                             <!-- id値を送信 -->
                             <input type="hidden" name="id" value="{{$titles->id}}">
-                            <input type="hidden" name="sort_number" value="{{$sort_number}}">
+                            <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                         </form>
                     </th>
 
@@ -132,7 +132,7 @@
                             </button>
                             <!-- id値を送信 -->
                             <input type="hidden" name="id" value="{{$titles->id}}">
-                            <input type="hidden" name="sort_number" value="{{$sort_number}}">
+                            <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                         </form>
                     </th>
 
@@ -145,7 +145,7 @@
                             </button>
                             <!-- id値を送信 -->
                             <input type="hidden" name="id" value="{{$titles->id}}">
-                            <input type="hidden" name="sort_number" value="{{$sort_number}}">
+                            <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                         </form>
                     </th>
 
@@ -217,7 +217,7 @@
             {{ $records->appends([
                 'id' => $titles->id,
                 'sort' => $sort,
-                'sort_number' => $sort_number,
+                'sortNumber' => $sortNumber,
                 'keyword' => $keyword
             ])->links()}}
         </div>

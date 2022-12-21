@@ -28,18 +28,18 @@ class RecordsController extends Controller
             return redirect('/titles');
         }
 
-        $id = $request->id;
+        $titleId = $request->id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         // タイトルがnullの場合、最初の1レコードを表示
         if (is_null($titles)) { //$sortの初期値（値がない場合）
             $titles = Title::where('user_id', Auth::user()->id)->first();
-            $id = $titles->id;
+            $titleId = $titles->id;
         }
 
         // chartGet関数に値を送る
-        session(['id' => $id]);
+        session(['title_id' => $titleId]);
 
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）
@@ -49,30 +49,30 @@ class RecordsController extends Controller
         $page = $request->page;
 
         // 測定値一覧の項目のボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
-        $sort_number = $request->sort_number;
-        if (is_null($sort_number)) { //$sort_numberの初期値（値がない場合）：'/'にリダイレクト後
-            $sort_number = 0;
-            $sort_order = 'desc';
+        $sortNumber = $request->sortNumber;
+        if (is_null($sortNumber)) { //$sortNumberの初期値（値がない場合）：'/'にリダイレクト後
+            $sortNumber = 0;
+            $sortOrder = 'desc';
         } else {
             if (!is_numeric($page)) { //$pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
-                $sort_number = $sort_number + 1;
-                if ($sort_number % 2 == 0) {
-                    $sort_order = 'desc';
+                $sortNumber = $sortNumber + 1;
+                if ($sortNumber % 2 == 0) {
+                    $sortOrder = 'desc';
                 } else {
-                    $sort_order = 'asc';
+                    $sortOrder = 'asc';
                 }
             } else { //$pageが数値の場合：ペジネーションのボタンを押すと自動的に$pageが数値になる
-                if ($sort_number % 2 == 0) {
-                    $sort_order = 'desc';
+                if ($sortNumber % 2 == 0) {
+                    $sortOrder = 'desc';
                 } else {
-                    $sort_order = 'asc';
+                    $sortOrder = 'asc';
                 }
             }
         }
 
         $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $id)
-            ->orderBy($sort, $sort_order)
+            ->where('title_id', $titleId)
+            ->orderBy($sort, $sortOrder)
             ->paginate(10);
         
         // $keywordに値があれば検索する
@@ -81,14 +81,14 @@ class RecordsController extends Controller
             $keyword = '';
         } else {
             $records = Record::where('user_id', Auth::user()->id)
-                        ->where('title_id', $id)
+                        ->where('title_id', $titleId)
                         ->where(function ($query) use ($keyword) {
 
                             // 全角スペースを半角に変換
                             $spaceConversion = mb_convert_kana($keyword, 's');
 
                             // 単語を半角スペースで区切り、配列にする（例："10 178" → ["10", "178"]）
-                            $wordArraySearched = preg_split('/[\s,、]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
                             // 単語をループで回し、レコードと部分一致するものがあれば、$queryとして保持される
                             foreach($wordArraySearched as $value) {
@@ -98,7 +98,7 @@ class RecordsController extends Controller
                             }
 
                         })
-                        ->orderBy($sort, $sort_order)
+                        ->orderBy($sort, $sortOrder)
                         ->paginate(10);
 
             session()->flash('message', '検索しました');
@@ -107,7 +107,7 @@ class RecordsController extends Controller
         return view('records', [
             'titles' => $titles,
             'sort' => $sort,
-            'sort_number' => $sort_number,
+            'sortNumber' => $sortNumber,
             'keyword' => $keyword,
             'records' => $records,
             'page' => $page
@@ -117,34 +117,34 @@ class RecordsController extends Controller
     // チャートデータを取得
     public function chartGet(){
 
-        $id = session('id');
+        $titleId = session('title_id');
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $id)
+            ->where('title_id', $titleId)
             ->orderBy('date', 'asc')
             ->get();
         
         $collection = collect($records);
-        $date_max = $collection->max('date');
-        $date_min = $collection->min('date');
-        $date_max_obj = new Carbon($date_max);
-        $date_min_obj = new Carbon($date_min);
-        $interval = $date_max_obj->diffInDays($date_min_obj, true);
+        $dateMax = $collection->max('date');
+        $dateMin = $collection->min('date');
+        $dateMaxObj = new Carbon($dateMax);
+        $dateMinObj = new Carbon($dateMin);
+        $interval = $dateMaxObj->diffInDays($dateMinObj, true);
 
         if ($interval > 1) { // $records->dateの最大値と最小値の日にちの差が1日以上あれば実行
             for ($i = 1; $i <= $interval; $i++) {
-                $date_min_obj->addDays(1);
-                $date_search = Record::where('user_id', Auth::user()->id)
-                    ->where('title_id', $id)
-                    ->where('date', $date_min_obj->format('Y-m-d'))
+                $dateMinObj->addDays(1);
+                $dateSearch = Record::where('user_id', Auth::user()->id)
+                    ->where('title_id', $titleId)
+                    ->where('date', $dateMinObj->format('Y-m-d'))
                     ->get();
-                $collection = collect($date_search);
+                $collection = collect($dateSearch);
                 if ($collection->isEmpty()) { // $records->dateの最大値と最小値の日にちの間で、測定値がない日があればnullを入れる
                     $number = count($records); // $recordsの個数はforで繰り返されるたびに増えていく
                     $records[$number] = new Record;
-                    $records[$number]->date = $date_min_obj->format('Y-m-d');
+                    $records[$number]->date = $dateMinObj->format('Y-m-d');
                     $records[$number]->amount = null;
                 }
             }
@@ -155,19 +155,19 @@ class RecordsController extends Controller
         
         $date = []; // chartjs.jsに値を渡すための配列を作成
         $amount = [];
-        $title_name = [];
+        $titleName = [];
 
         for ($i = 0; $i < count($records); $i++) { // 配列$dateと$amountに$records->dateと$records->amountの値をそれぞれ入れる
             $date[] = $records[$i]->date;
             $amount[] = $records[$i]->amount;
         }
 
-        $title_name[] = $titles->title;
+        $titleName[] = $titles->title;
 
         return [
             'date' => $date, 
             'amount' => $amount,
-            'title_name' => $title_name
+            'title_name' => $titleName
         ];
     }
 
@@ -181,9 +181,9 @@ class RecordsController extends Controller
             'comment' => 'required|min:1',
         ]);
 
-        $id = $request->id;
+        $titleId = $request->id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）
@@ -191,7 +191,7 @@ class RecordsController extends Controller
         }
 
         $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $id)
+            ->where('title_id', $titleId)
             ->orderBy($sort, 'asc')
             ->paginate(10);
 
@@ -203,7 +203,7 @@ class RecordsController extends Controller
         //Eloquentモデル（保存処理）
         $records = new Record;
         $records->user_id = Auth::user()->id;
-        $records->title_id = $id;
+        $records->title_id = $titleId;
         $records->date = $request->date;
         $records->amount = $request->amount;
         $records->comment = $request->comment;
@@ -219,27 +219,27 @@ class RecordsController extends Controller
 
         $keyword = $request->input('keyword');
 
-        $id = $request->id;
+        $titleId = $request->id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         $sort = $request->sort;
 
-        $sort_number = $request->sort_number;
+        $sortNumber = $request->sortNumber;
 
-        return redirect('/?id='.$titles->id.'&sort='.$sort.'&sort_number='.$sort_number.'&keyword='.$keyword);
+        return redirect('/?id='.$titles->id.'&sort='.$sort.'&sortNumber='.$sortNumber.'&keyword='.$keyword);
     }
 
     // 測定値編集画面表示
     public function edit(Request $request) {
 
-        $record_id = $request->record_id;
+        $recordId = $request->record_id;
 
-        $records = Record::where('user_id', Auth::user()->id)->find($record_id);
+        $records = Record::where('user_id', Auth::user()->id)->find($recordId);
 
-        $id = $records->title_id;
+        $titleId = $records->title_id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         $page = $request->page;
 
@@ -263,13 +263,13 @@ class RecordsController extends Controller
 
         $sort = 'created_at';
 
-        $id = $request->id;
+        $recordId = $request->id;
 
-        $records = Record::where('user_id', Auth::user()->id)->find($id);
+        $records = Record::where('user_id', Auth::user()->id)->find($recordId);
 
-        $title_id = $records->title_id;
+        $titleId = $records->title_id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         $page = $request->page;
 
@@ -299,13 +299,13 @@ class RecordsController extends Controller
 
         $sort = 'created_at';
 
-        $id = $record->id;
+        $recordId = $record->id;
 
-        $records = Record::where('user_id', Auth::user()->id)->find($id);
+        $records = Record::where('user_id', Auth::user()->id)->find($recordId);
 
-        $title_id = $records->title_id;
+        $titleId = $records->title_id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($title_id);
+        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
 
         $record->delete();
 
