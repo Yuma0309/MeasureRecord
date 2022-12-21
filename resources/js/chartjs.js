@@ -31,6 +31,6 @@ window.onload = function() {
             myChart.update();
         })
         .catch(() => {
-            alert("失敗しました");
+            alert("グラフのデータ取得に失敗しました");
         });
 }

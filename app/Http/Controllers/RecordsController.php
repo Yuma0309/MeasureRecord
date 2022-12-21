@@ -30,9 +30,6 @@ class RecordsController extends Controller
 
         $id = $request->id;
 
-        // chartGet関数に値を送る
-        session(['id' => $id]);
-
         $titles = Title::where('user_id', Auth::user()->id)->find($id);
 
         // タイトルがnullの場合、最初の1レコードを表示
@@ -40,6 +37,9 @@ class RecordsController extends Controller
             $titles = Title::where('user_id', Auth::user()->id)->first();
             $id = $titles->id;
         }
+
+        // chartGet関数に値を送る
+        session(['id' => $id]);
 
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）

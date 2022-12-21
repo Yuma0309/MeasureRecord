@@ -114,7 +114,7 @@
                     <th style="width:20%" class="text-center">
                         <form action="{{ url('/?sort=date') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-outline-primary">
+                            <button type="submit" class="btn btn-outline-primary w-100">
                                 日付
                             </button>
                             <!-- id値を送信 -->
@@ -127,7 +127,7 @@
                     <th style="width:30%" class="text-center">
                         <form action="{{ url('/?sort=amount') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-outline-primary">
+                            <button type="submit" class="btn btn-outline-primary w-100">
                                 測定値
                             </button>
                             <!-- id値を送信 -->
@@ -140,7 +140,7 @@
                     <th style="width:30%" class="text-center">
                         <form action="{{ url('/?sort=comment') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-outline-primary">
+                            <button type="submit" class="btn btn-outline-primary w-100">
                                 コメント
                             </button>
                             <!-- id値を送信 -->
