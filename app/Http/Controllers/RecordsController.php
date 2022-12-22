@@ -23,18 +23,18 @@ class RecordsController extends Controller
     public function index(Request $request){
 
         // タイトルが1つもない場合、タイトル保存画面を表示
-        $titles = Title::where('user_id', Auth::user()->id)->count();
+        $titles = Title::count();
         if ($titles === 0) {
             return redirect('/titles');
         }
 
         $titleId = $request->id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
         // タイトルがnullの場合、最初の1レコードを表示
         if (is_null($titles)) { //$sortの初期値（値がない場合）
-            $titles = Title::where('user_id', Auth::user()->id)->first();
+            $titles = Title::first();
             $titleId = $titles->id;
         }
 
@@ -70,8 +70,7 @@ class RecordsController extends Controller
             }
         }
 
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $titleId)
+        $records = Record::where('title_id', $titleId)
             ->orderBy($sort, $sortOrder)
             ->paginate(10);
         
@@ -80,26 +79,25 @@ class RecordsController extends Controller
         if (is_null($keyword)) { //$keywordの初期値（値がない場合）
             $keyword = '';
         } else {
-            $records = Record::where('user_id', Auth::user()->id)
-                        ->where('title_id', $titleId)
-                        ->where(function ($query) use ($keyword) {
+            $records = Record::where('title_id', $titleId)
+                ->where(function ($query) use ($keyword) {
 
-                            // 全角スペースを半角に変換
-                            $spaceConversion = mb_convert_kana($keyword, 's');
+                    // 全角スペースを半角に変換
+                    $spaceConversion = mb_convert_kana($keyword, 's');
 
-                            // 単語を半角スペースで区切り、配列にする（例："10 178" → ["10", "178"]）
-                            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                    // 単語を半角スペースで区切り、配列にする（例："10 178" → ["10", "178"]）
+                    $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
 
-                            // 単語をループで回し、レコードと部分一致するものがあれば、$queryとして保持される
-                            foreach($wordArraySearched as $value) {
-                                $query->where('date', 'LIKE', "%{$value}%")
-                                    ->orWhere('amount', 'LIKE', "%{$value}%")
-                                    ->orWhere('comment', 'LIKE', "%{$value}%");
-                            }
+                    // 単語をループで回し、レコードと部分一致するものがあれば、$queryとして保持される
+                    foreach($wordArraySearched as $value) {
+                        $query->where('date', 'LIKE', "%{$value}%")
+                            ->orWhere('amount', 'LIKE', "%{$value}%")
+                            ->orWhere('comment', 'LIKE', "%{$value}%");
+                    }
 
-                        })
-                        ->orderBy($sort, $sortOrder)
-                        ->paginate(10);
+                })
+                ->orderBy($sort, $sortOrder)
+                ->paginate(10);
 
             session()->flash('message', '検索しました');
         }
@@ -119,10 +117,9 @@ class RecordsController extends Controller
 
         $titleId = session('title_id');
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $titleId)
+        $records = Record::where('title_id', $titleId)
             ->orderBy('date', 'asc')
             ->get();
         
@@ -136,8 +133,7 @@ class RecordsController extends Controller
         if ($interval > 1) { // $records->dateの最大値と最小値の日にちの差が1日以上あれば実行
             for ($i = 1; $i <= $interval; $i++) {
                 $dateMinObj->addDays(1);
-                $dateSearch = Record::where('user_id', Auth::user()->id)
-                    ->where('title_id', $titleId)
+                $dateSearch = Record::where('title_id', $titleId)
                     ->where('date', $dateMinObj->format('Y-m-d'))
                     ->get();
                 $collection = collect($dateSearch);
@@ -183,15 +179,14 @@ class RecordsController extends Controller
 
         $titleId = $request->id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
         $sort = $request->sort;
         if (is_null($sort)) { //$sortの初期値（値がない場合）
             $sort = 'created_at';
         }
 
-        $records = Record::where('user_id', Auth::user()->id)
-            ->where('title_id', $titleId)
+        $records = Record::where('title_id', $titleId)
             ->orderBy($sort, 'asc')
             ->paginate(10);
 
@@ -221,7 +216,7 @@ class RecordsController extends Controller
 
         $titleId = $request->id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
         $sort = $request->sort;
 
@@ -235,11 +230,11 @@ class RecordsController extends Controller
 
         $recordId = $request->record_id;
 
-        $records = Record::where('user_id', Auth::user()->id)->find($recordId);
+        $records = Record::find($recordId);
 
         $titleId = $records->title_id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
         $page = $request->page;
 
@@ -265,11 +260,11 @@ class RecordsController extends Controller
 
         $recordId = $request->id;
 
-        $records = Record::where('user_id', Auth::user()->id)->find($recordId);
+        $records = Record::find($recordId);
 
         $titleId = $records->title_id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
         $page = $request->page;
 
@@ -283,7 +278,7 @@ class RecordsController extends Controller
         }
 
         // データ編集
-        $records = Record::where('user_id', Auth::user()->id)->find($request->id);
+        $records = Record::find($request->id);
         $records->date = $request->date;
         $records->amount = $request->amount;
         $records->comment = $request->comment;
@@ -301,11 +296,11 @@ class RecordsController extends Controller
 
         $recordId = $record->id;
 
-        $records = Record::where('user_id', Auth::user()->id)->find($recordId);
+        $records = Record::find($recordId);
 
         $titleId = $records->title_id;
 
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
 
         $record->delete();
 

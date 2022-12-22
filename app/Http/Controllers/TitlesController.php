@@ -49,7 +49,7 @@ class TitlesController extends Controller
 
     // タイトル画面表示
     public function titleindex() {
-        $titles = Title::where('user_id', Auth::user()->id)->orderBy('created_at', 'asc')->paginate(10);
+        $titles = Title::orderBy('created_at', 'asc')->paginate(10);
         return view('titlesindex', [
             'titles' => $titles
         ]);
@@ -86,7 +86,7 @@ class TitlesController extends Controller
 
     // タイトル編集画面表示
     public function titleedit($titleId) {
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
         return view('titlesedit', ['title' => $titles]);
     }
 
@@ -101,7 +101,7 @@ class TitlesController extends Controller
 
         $titleId = $request->id;
 
-        $title = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $title = Title::find($titleId);
 
         // バリデーション：エラー
         if ($validator->fails()) {
@@ -111,7 +111,7 @@ class TitlesController extends Controller
         }
 
         // データ編集
-        $titles = Title::where('user_id', Auth::user()->id)->find($titleId);
+        $titles = Title::find($titleId);
         $titles->title = $request->title;
         $titles->unit = $request->unit;
         $titles->save();
