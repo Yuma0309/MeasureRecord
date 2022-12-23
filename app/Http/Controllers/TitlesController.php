@@ -20,7 +20,7 @@ class TitlesController extends Controller
 
     // タイトル保存画面表示（タイトルが1つもない場合に表示させる）
     public function title() {
-        return view('titles');
+        return view('titles.titles');
     }
     
     // タイトル保存処理
@@ -50,14 +50,14 @@ class TitlesController extends Controller
     // タイトル画面表示
     public function titleindex() {
         $titles = Title::orderBy('created_at', 'asc')->paginate(10);
-        return view('titlesindex', [
+        return view('titles.titlesindex', [
             'titles' => $titles
         ]);
     }
 
     // タイトル追加画面表示
     public function titleaddindex() {
-        return view('titlesadd');
+        return view('titles.titlesadd');
     }
 
     // タイトル追加処理
@@ -87,7 +87,7 @@ class TitlesController extends Controller
     // タイトル編集画面表示
     public function titleedit($titleId) {
         $titles = Title::find($titleId);
-        return view('titlesedit', ['title' => $titles]);
+        return view('titles.titlesedit', ['title' => $titles]);
     }
 
     // タイトル編集処理
@@ -105,7 +105,7 @@ class TitlesController extends Controller
 
         // バリデーション：エラー
         if ($validator->fails()) {
-            return view('titlesedit', [
+            return view('titles.titlesedit', [
                 'title' => $title
             ])->withErrors($validator);
         }

@@ -102,7 +102,7 @@ class RecordsController extends Controller
             session()->flash('message', '検索しました');
         }
 
-        return view('records', [
+        return view('records.records', [
             'titles' => $titles,
             'sort' => $sort,
             'sortNumber' => $sortNumber,
@@ -238,7 +238,7 @@ class RecordsController extends Controller
 
         $page = $request->page;
 
-        return view('recordsedit', [
+        return view('records.recordsedit', [
             'record' => $records,
             'titles' => $titles,
             'page' => $page
@@ -270,7 +270,7 @@ class RecordsController extends Controller
 
         // バリデーション：エラー
         if ($validator->fails()) {
-            return view('recordsedit', [
+            return view('records.recordsedit', [
                 'record' => $records,
                 'titles' => $titles,
                 'page' => $page
