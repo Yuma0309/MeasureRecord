@@ -73,7 +73,7 @@
         <div class="text-secondary mx-2">
             ({{ $titles->unit }})
         </div>
-        @vite(['resources/js/app.js'])
+        <script src="{{ asset('js/app.js') }}" defer></script>
         <canvas id="myChart"></canvas>
     </div>
 
