@@ -44,7 +44,7 @@
                     <tr>
 
                         <!-- タイトル -->
-                        <td style="width:30%" class="text-center align-middle">
+                        <td style="width:35%" class="text-center align-middle">
                             <form action="{{ url('/') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-dark">
@@ -56,14 +56,14 @@
                         </td>
 
                         <!-- 測定値の単位 -->
-                        <td style="width:30%" class="text-center align-middle">
+                        <td style="width:35%" class="text-center align-middle">
                             <div>
                                 測定値の単位：{{ $title->unit }}
                             </div>
                         </td>
 
                         <!-- 編集ボタン -->
-                        <td style="width:20%" class="text-center align-middle">
+                        <td style="width:15%" class="text-center align-middle">
                             <form action="{{ url('titlesedit/'.$title->id) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-success">
@@ -73,7 +73,7 @@
                         </td>
 
                         <!-- 削除ボタン -->
-                        <td style="width:20%" class="text-center align-middle">
+                        <td style="width:15%" class="text-center align-middle">
                             <form action="{{ url('title/'.$title->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')

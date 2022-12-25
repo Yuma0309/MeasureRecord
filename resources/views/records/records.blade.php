@@ -111,7 +111,7 @@
                 <tr>
 
                     <!-- 日付の並べ替えボタン -->
-                    <th style="width:20%" class="text-center">
+                    <th style="width:24%" class="text-center">
                         <form action="{{ url('/?sort=date') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-outline-primary w-100">
@@ -124,7 +124,7 @@
                     </th>
 
                     <!-- 測定値の並べ替えボタン -->
-                    <th style="width:30%" class="text-center">
+                    <th style="width:28%" class="text-center">
                         <form action="{{ url('/?sort=amount') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-outline-primary w-100">
@@ -137,7 +137,7 @@
                     </th>
 
                     <!-- コメントの並べ替えボタン -->
-                    <th style="width:30%" class="text-center">
+                    <th style="width:42%" class="text-center">
                         <form action="{{ url('/?sort=comment') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-outline-primary w-100">
@@ -149,10 +149,10 @@
                         </form>
                     </th>
 
-                    <th style="width:10%">
+                    <th style="width:3%">
                     </th>
 
-                    <th style="width:10%">
+                    <th style="width:3%">
                     </th>
 
                 </tr>
