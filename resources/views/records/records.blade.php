@@ -14,7 +14,7 @@
     <input type="hidden" name="id" value="{{$titles->id}}">
 </form>
 
-<div class="row">
+<div class="row mx-0">
     <div class="col-md-1">
     </div>
     <div class="col-md-5 my-3">
@@ -73,8 +73,32 @@
         <div class="text-secondary mx-2">
             ({{ $titles->unit }})
         </div>
-        <script src="{{ asset('js/app.js') }}" defer></script>
         <canvas id="myChart"></canvas>
+        <!-- <script src="{{ asset('js/app.js') }}" ></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            var labels = <?php echo json_encode($date) ?>;
+            var label = <?php echo json_encode($titles->title) ?>;
+            var data = <?php echo json_encode($amount) ?>;
+            window.addEventListener('load', function () {
+                const ctx = document.getElementById("myChart").getContext("2d");
+                const myChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: label,
+                                spanGaps : true,
+                                data: data,
+                                borderColor: "rgb(30, 144, 255)",
+                                backgroundColor: "rgba(135, 206, 250, 0.5)",
+                            },
+                        ],
+                    },
+                });
+            })
+        </script>
     </div>
 
     @if (session('message'))

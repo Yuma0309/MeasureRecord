@@ -1,3 +1,8 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************************!*\
+  !*** ./resources/js/chartjs.js ***!
+  \*********************************/
 // import Chart from "chart.js/auto";
 // import axios from 'axios';
 
@@ -34,3 +39,5 @@
 //             alert("グラフのデータ取得に失敗しました");
 //         });
 // }
+/******/ })()
+;

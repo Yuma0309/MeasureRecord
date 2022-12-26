@@ -39,86 +39,9 @@ class RecordsController extends Controller
         }
 
         // chartGet関数に値を送る
-        session(['title_id' => $titleId]);
+        // session(['title_id' => $titleId]);
 
-        $sort = $request->sort;
-        if (is_null($sort)) { //$sortの初期値（値がない場合）
-            $sort = 'created_at';
-        }
-
-        $page = $request->page;
-
-        // 測定値一覧の項目のボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
-        $sortNumber = $request->sortNumber;
-        if (is_null($sortNumber)) { //$sortNumberの初期値（値がない場合）：'/'にリダイレクト後
-            $sortNumber = 0;
-            $sortOrder = 'desc';
-        } else {
-            if (!is_numeric($page)) { //$pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
-                $sortNumber = $sortNumber + 1;
-                if ($sortNumber % 2 == 0) {
-                    $sortOrder = 'desc';
-                } else {
-                    $sortOrder = 'asc';
-                }
-            } else { //$pageが数値の場合：ペジネーションのボタンを押すと自動的に$pageが数値になる
-                if ($sortNumber % 2 == 0) {
-                    $sortOrder = 'desc';
-                } else {
-                    $sortOrder = 'asc';
-                }
-            }
-        }
-
-        $records = Record::where('title_id', $titleId)
-            ->orderBy($sort, $sortOrder)
-            ->paginate(10);
-        
-        // $keywordに値があれば検索する
-        $keyword = $request->keyword;
-        if (is_null($keyword)) { //$keywordの初期値（値がない場合）
-            $keyword = '';
-        } else {
-            $records = Record::where('title_id', $titleId)
-                ->where(function ($query) use ($keyword) {
-
-                    // 全角スペースを半角に変換
-                    $spaceConversion = mb_convert_kana($keyword, 's');
-
-                    // 単語を半角スペースで区切り、配列にする（例："10 178" → ["10", "178"]）
-                    $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
-
-                    // 単語をループで回し、レコードと部分一致するものがあれば、$queryとして保持される
-                    foreach($wordArraySearched as $value) {
-                        $query->where('date', 'LIKE', "%{$value}%")
-                            ->orWhere('amount', 'LIKE', "%{$value}%")
-                            ->orWhere('comment', 'LIKE', "%{$value}%");
-                    }
-
-                })
-                ->orderBy($sort, $sortOrder)
-                ->paginate(10);
-
-            session()->flash('message', '検索しました');
-        }
-
-        return view('records.records', [
-            'titles' => $titles,
-            'sort' => $sort,
-            'sortNumber' => $sortNumber,
-            'keyword' => $keyword,
-            'records' => $records,
-            'page' => $page
-        ]);
-    }
-    
-    // チャートデータを取得
-    public function chartGet(){
-
-        $titleId = session('title_id');
-
-        $titles = Title::find($titleId);
-
+        // チャートデータを取得
         $records = Record::where('title_id', $titleId)
             ->orderBy('date', 'asc')
             ->get();
@@ -151,21 +74,141 @@ class RecordsController extends Controller
         
         $date = []; // chartjs.jsに値を渡すための配列を作成
         $amount = [];
-        $titleName = [];
 
         for ($i = 0; $i < count($records); $i++) { // 配列$dateと$amountに$records->dateと$records->amountの値をそれぞれ入れる
             $date[] = $records[$i]->date;
             $amount[] = $records[$i]->amount;
         }
 
-        $titleName[] = $titles->title;
+        $sort = $request->sort;
+        if (is_null($sort)) { //$sortの初期値（値がない場合）
+            $sort = 'created_at';
+        }
 
-        return [
+        $page = $request->page;
+
+        // 測定値一覧の項目のボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
+        $sortNumber = $request->sortNumber;
+        if (is_null($sortNumber)) { //$sortNumberの初期値（値がない場合）：'/'にリダイレクト後
+            $sortNumber = 0;
+            $sortOrder = 'desc';
+        } else {
+            if (!is_numeric($page)) { //$pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
+                $sortNumber = $sortNumber + 1;
+                if ($sortNumber % 2 == 0) {
+                    $sortOrder = 'desc';
+                    session()->flash('message', '降順で並べ替えました');
+                } else {
+                    $sortOrder = 'asc';
+                    session()->flash('message', '昇順で並べ替えました');
+                }
+            } else { //$pageが数値の場合：ペジネーションのボタンを押すと自動的に$pageが数値になる
+                if ($sortNumber % 2 == 0) {
+                    $sortOrder = 'desc';
+                } else {
+                    $sortOrder = 'asc';
+                }
+            }
+        }
+
+        $records = Record::where('title_id', $titleId)
+            ->orderBy($sort, $sortOrder)
+            ->paginate(10);
+        
+        // $keywordに値があれば検索する
+        $keyword = $request->keyword;
+        if (is_null($keyword)) { //$keywordの初期値（値がない場合）
+            $keyword = '';
+        } else {
+            $records = Record::where('title_id', $titleId)
+                ->where(function ($query) use ($keyword) {
+
+                    // 全角スペースを半角に変換
+                    $spaceConversion = mb_convert_kana($keyword, 's');
+
+                    // 単語を半角スペースで区切り、配列にする（例："10 178" → ["10", "178"]）
+                    $wordArraySearched = preg_split('/[\s,、]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+                    // 単語をループで回し、レコードと部分一致するものがあれば、$queryとして保持される
+                    foreach($wordArraySearched as $value) {
+                        $query->orWhere('date', 'LIKE', "%{$value}%")
+                            ->orWhere('amount', 'LIKE', "%{$value}%")
+                            ->orWhere('comment', 'LIKE', "%{$value}%");
+                    }
+
+                })
+                ->orderBy($sort, $sortOrder)
+                ->paginate(10);
+
+            session()->flash('message', '検索しました');
+        }
+
+        return view('records.records', [
+            'titles' => $titles,
+            'sort' => $sort,
+            'sortNumber' => $sortNumber,
+            'keyword' => $keyword,
+            'records' => $records,
+            'page' => $page,
             'date' => $date, 
-            'amount' => $amount,
-            'title_name' => $titleName
-        ];
+            'amount' => $amount
+        ]);
     }
+    
+    // チャートデータを取得
+    // public function chartGet(){
+
+    //     $titleId = session('title_id');
+
+    //     $titles = Title::find($titleId);
+
+    //     $records = Record::where('title_id', $titleId)
+    //         ->orderBy('date', 'asc')
+    //         ->get();
+        
+    //     $collection = collect($records);
+    //     $dateMax = $collection->max('date');
+    //     $dateMin = $collection->min('date');
+    //     $dateMaxObj = new Carbon($dateMax);
+    //     $dateMinObj = new Carbon($dateMin);
+    //     $interval = $dateMaxObj->diffInDays($dateMinObj, true);
+
+        // if ($interval > 1) { // $records->dateの最大値と最小値の日にちの差が1日以上あれば実行
+        //     for ($i = 1; $i <= $interval; $i++) {
+        //         $dateMinObj->addDays(1);
+        //         $dateSearch = Record::where('title_id', $titleId)
+        //             ->where('date', $dateMinObj->format('Y-m-d'))
+        //             ->get();
+        //         $collection = collect($dateSearch);
+        //         if ($collection->isEmpty()) { // $records->dateの最大値と最小値の日にちの間で、測定値がない日があればnullを入れる
+        //             $number = count($records); // $recordsの個数はforで繰り返されるたびに増えていく
+        //             $records[$number] = new Record;
+        //             $records[$number]->date = $dateMinObj->format('Y-m-d');
+        //             $records[$number]->amount = null;
+        //         }
+        //     }
+        // }
+
+    //     $collection = collect($records);
+    //     $records = $collection->sortBy('date')->values(); // $recordsのオブジェクトを日付の昇順に並べ替える
+        
+    //     $date = []; // chartjs.jsに値を渡すための配列を作成
+    //     $amount = [];
+    //     $titleName = [];
+
+    //     for ($i = 0; $i < count($records); $i++) { // 配列$dateと$amountに$records->dateと$records->amountの値をそれぞれ入れる
+    //         $date[] = $records[$i]->date;
+    //         $amount[] = $records[$i]->amount;
+    //     }
+
+    //     $titleName[] = $titles->title;
+
+    //     return [
+    //         'date' => $date, 
+    //         'amount' => $amount,
+    //         'title_name' => $titleName
+    //     ];
+    // }
 
     // 測定値保存処理
     public function store(Request $request){

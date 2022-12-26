@@ -46,7 +46,7 @@ Route::get('/', 'App\Http\Controllers\RecordsController@index');
 Route::post('/', 'App\Http\Controllers\RecordsController@index');
 
 // チャートデータ取得処理
-Route::get('/chart-get', [App\Http\Controllers\RecordsController::class, 'chartGet'])->name('chart-get');
+// Route::get('/chart-get', [App\Http\Controllers\RecordsController::class, 'chartGet'])->name('chart-get');
 
 // 測定値保存処理
 Route::post('/records', 'App\Http\Controllers\RecordsController@store');
