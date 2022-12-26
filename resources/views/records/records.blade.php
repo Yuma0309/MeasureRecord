@@ -75,7 +75,7 @@
         </div>
         <canvas id="myChart"></canvas>
         <!-- <script src="{{ asset('js/app.js') }}" ></script> -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.1.1/dist/chart.umd.min.js"></script>
         <script>
             var labels = <?php echo json_encode($date) ?>;
             var label = <?php echo json_encode($titles->title) ?>;
