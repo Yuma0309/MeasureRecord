@@ -28,7 +28,7 @@ class TitlesController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:1|max:30',
-            'unit' => 'required|min:1|max:30',
+            'unit' => 'max:30',
         ]);
 
         //バリデーション：エラー
@@ -65,7 +65,7 @@ class TitlesController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'title' => 'required|min:1|max:30',
-            'unit' => 'required|min:1|max:30',
+            'unit' => 'max:30',
         ]);
 
         //バリデーション：エラー
@@ -96,7 +96,7 @@ class TitlesController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'title' => 'required|min:1|max:30',
-            'unit' => 'required|min:1|max:30',
+            'unit' => 'max:30',
         ]);
 
         $titleId = $request->id;

@@ -70,9 +70,11 @@
 
     <!-- 折れ線グラフ -->
     <div class="col-md-5 my-3">
-        <div class="text-secondary mx-2">
-            ({{ $titles->unit }})
-        </div>
+        @if (isset($titles->unit))
+            <div class="text-secondary mx-2">
+                ({{ $titles->unit }})
+            </div>
+        @endif
         <canvas id="myChart"></canvas>
         <!-- <script src="{{ asset('js/app.js') }}" ></script> -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.1.1/dist/chart.umd.min.js"></script>
@@ -102,9 +104,9 @@
     </div>
 
     @if (session('message'))
-    <div class="alert alert-success text-center">
-        {{ session('message') }}
-    </div>
+        <div class="alert alert-success text-center">
+            {{ session('message') }}
+        </div>
     @endif
 
 </div>
@@ -124,128 +126,129 @@
 
 <!-- 測定値一覧 -->
 @if (isset($records))
-    @if (count($records) > 0)
-        <div style="font-size:15pt;font-weight:bold;" class="text-center my-2 mx-2">
-            測定値一覧
-        </div>
-        <table class="table table-striped">
+    <div style="font-size:15pt;font-weight:bold;" class="text-center my-2 mx-2">
+        測定値一覧
+    </div>
+    <table class="table table-striped">
 
-            <!-- テーブルヘッダー -->
-            <thead>
+        <!-- テーブルヘッダー -->
+        <thead>
+            <tr>
+
+                <!-- 日付の並べ替えボタン -->
+                <th style="width:24%" class="text-center">
+                    <form action="{{ url('/?sort=date') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            日付
+                        </button>
+                        <!-- id値を送信 -->
+                        <input type="hidden" name="id" value="{{$titles->id}}">
+                        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
+                    </form>
+                </th>
+
+                <!-- 測定値の並べ替えボタン -->
+                <th style="width:28%" class="text-center">
+                    <form action="{{ url('/?sort=amount') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            測定値
+                        </button>
+                        <!-- id値を送信 -->
+                        <input type="hidden" name="id" value="{{$titles->id}}">
+                        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
+                    </form>
+                </th>
+
+                <!-- コメントの並べ替えボタン -->
+                <th style="width:42%" class="text-center">
+                    <form action="{{ url('/?sort=comment') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            コメント
+                        </button>
+                        <!-- id値を送信 -->
+                        <input type="hidden" name="id" value="{{$titles->id}}">
+                        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
+                    </form>
+                </th>
+
+                <th style="width:3%">
+                </th>
+
+                <th style="width:3%">
+                </th>
+
+            </tr>
+        </thead>
+
+        <!-- テーブル本体 -->
+        <tbody>
+            @foreach ($records as $record)
                 <tr>
 
-                    <!-- 日付の並べ替えボタン -->
-                    <th style="width:24%" class="text-center">
-                        <form action="{{ url('/?sort=date') }}" method="POST">
+                    <!-- 日付 -->
+                    <td class="text-center align-middle">
+                        <div>
+                            {{ $record->date }}
+                        </div>
+                    </td>
+
+                    <!-- 測定値 -->
+                    <td class="text-center align-middle">
+                        <div>
+                            {{ $record->amount }}
+                            @if (isset($titles->unit))
+                                {{ $titles->unit }}
+                            @endif
+                        </div>
+                    </td>
+
+                    <!-- コメント -->
+                    <td class="text-center align-middle">
+                        <div>
+                            {{ $record->comment }}
+                        </div>
+                    </td>
+
+                    <!-- 編集ボタン -->
+                    <td class="text-center align-middle">
+                        <form action="{{ url('recordsedit') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-outline-primary w-100">
-                                日付
+                            <button type="submit" class="btn btn-outline-success">
+                                編集
                             </button>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$titles->id}}">
-                            <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
+                            <input type="hidden" name="record_id" value="{{$record->id}}">
+                            <input type="hidden" name="page" value="{{$page}}">
                         </form>
-                    </th>
+                    </td>
 
-                    <!-- 測定値の並べ替えボタン -->
-                    <th style="width:28%" class="text-center">
-                        <form action="{{ url('/?sort=amount') }}" method="POST">
+                    <!-- 削除ボタン -->
+                    <td class="text-center align-middle">
+                        <form action="{{ url('record/'.$record->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-outline-primary w-100">
-                                測定値
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>
+                                削除
                             </button>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$titles->id}}">
-                            <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                         </form>
-                    </th>
-
-                    <!-- コメントの並べ替えボタン -->
-                    <th style="width:42%" class="text-center">
-                        <form action="{{ url('/?sort=comment') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-primary w-100">
-                                コメント
-                            </button>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$titles->id}}">
-                            <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
-                        </form>
-                    </th>
-
-                    <th style="width:3%">
-                    </th>
-
-                    <th style="width:3%">
-                    </th>
+                    </td>
 
                 </tr>
-            </thead>
+            @endforeach
+        </tbody>
+    </table>
 
-            <!-- テーブル本体 -->
-            <tbody>
-                @foreach ($records as $record)
-                    <tr>
-
-                        <!-- 日付 -->
-                        <td class="text-center align-middle">
-                            <div>
-                                {{ $record->date }}
-                            </div>
-                        </td>
-
-                        <!-- 測定値 -->
-                        <td class="text-center align-middle">
-                            <div>
-                                {{ $record->amount }}{{ $titles->unit }}
-                            </div>
-                        </td>
-
-                        <!-- コメント -->
-                        <td class="text-center align-middle">
-                            <div>
-                                {{ $record->comment }}
-                            </div>
-                        </td>
-
-                        <!-- 編集ボタン -->
-                        <td class="text-center align-middle">
-                            <form action="{{ url('recordsedit') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-success">
-                                    編集
-                                </button>
-                                <input type="hidden" name="record_id" value="{{$record->id}}">
-                                <input type="hidden" name="page" value="{{$page}}">
-                            </form>
-                        </td>
-
-                        <!-- 削除ボタン -->
-                        <td class="text-center align-middle">
-                            <form action="{{ url('record/'.$record->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>
-                                    削除
-                                </button>
-                            </form>
-                        </td>
-
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <!-- ぺジネーション -->
-        <div class="pagination justify-content-center my-4">
-            {{ $records->appends([
-                'id' => $titles->id,
-                'sort' => $sort,
-                'sortNumber' => $sortNumber,
-                'keyword' => $keyword
-            ])->links()}}
-        </div>
-        
-    @endif
+    <!-- ぺジネーション -->
+    <div class="pagination justify-content-center my-4">
+        {{ $records->appends([
+            'id' => $titles->id,
+            'sort' => $sort,
+            'sortNumber' => $sortNumber,
+            'keyword' => $keyword
+        ])->links()}}
+    </div>
+    
 @endif
 @endsection

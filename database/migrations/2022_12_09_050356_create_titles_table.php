@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->string('title', 30);
-            $table->string('unit', 30);
+            $table->string('unit', 30)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('titles');
+        Schema::dropIfExists('titles', function (Blueprint $table) {
+            //
+        });
     }
 };
