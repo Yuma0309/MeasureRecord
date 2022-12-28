@@ -139,7 +139,7 @@
                 <th style="width:24%" class="text-center">
                     <form action="{{ url('/?sort=date') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary w-100">
+                        <button style="font-size:9pt;font-weight:bold;" type="submit" class="btn btn-outline-primary w-100">
                             日付
                         </button>
                         <!-- id値を送信 -->
@@ -152,7 +152,7 @@
                 <th style="width:28%" class="text-center">
                     <form action="{{ url('/?sort=amount') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary w-100">
+                        <button style="font-size:9pt;font-weight:bold;" type="submit" class="btn btn-outline-primary w-100">
                             測定値
                         </button>
                         <!-- id値を送信 -->
@@ -165,7 +165,7 @@
                 <th style="width:42%" class="text-center">
                     <form action="{{ url('/?sort=comment') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-outline-primary w-100">
+                        <button style="font-size:9pt;font-weight:bold;" type="submit" class="btn btn-outline-primary w-100">
                             コメント
                         </button>
                         <!-- id値を送信 -->
@@ -216,7 +216,7 @@
                     <td class="text-center align-middle">
                         <form action="{{ url('recordsedit') }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-outline-success">
+                            <button style="font-size:7pt;font-weight:bold;" type="submit" class="btn btn-outline-success">
                                 編集
                             </button>
                             <input type="hidden" name="record_id" value="{{$record->id}}">
@@ -229,7 +229,7 @@
                         <form action="{{ url('record/'.$record->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>
+                            <button style="font-size:7pt;font-weight:bold;" type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>
                                 削除
                             </button>
                         </form>
