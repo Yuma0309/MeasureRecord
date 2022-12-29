@@ -212,7 +212,6 @@ class RecordsController extends Controller
 
     // 測定値保存処理
     public function store(Request $request){
-
         // バリデーション
         $validator = Validator::make($request->all(), [
             'date' => 'required',
@@ -254,7 +253,6 @@ class RecordsController extends Controller
 
     // 測定値検索処理
     public function search(Request $request){
-
         $keyword = $request->input('keyword');
 
         $titleId = $request->id;
@@ -270,7 +268,6 @@ class RecordsController extends Controller
 
     // 測定値編集画面表示
     public function edit(Request $request) {
-
         $recordId = $request->record_id;
 
         $records = Record::find($recordId);
@@ -290,10 +287,9 @@ class RecordsController extends Controller
     
     // 測定値編集処理
     public function update(Request $request){
-
         // バリデーション
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
+            'record_id' => 'required',
             'date' => 'required',
             'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999.94', 'min:-999999999.94'],
             'comment' => 'required|min:1',
@@ -301,7 +297,7 @@ class RecordsController extends Controller
 
         $sort = 'created_at';
 
-        $recordId = $request->id;
+        $recordId = $request->record_id;
 
         $records = Record::find($recordId);
 
@@ -321,7 +317,7 @@ class RecordsController extends Controller
         }
 
         // データ編集
-        $records = Record::find($request->id);
+        $records = Record::find($request->record_id);
         $records->date = $request->date;
         $records->amount = $request->amount;
         $records->comment = $request->comment;
@@ -333,23 +329,23 @@ class RecordsController extends Controller
     }
 
     // 測定値削除処理
-    public function destroy(Record $record) {
+    public function destroy(Request $request) {
+        $recordId = $request->record_id;
 
         $sort = 'created_at';
 
-        $recordId = $record->id;
+        $record = Record::find($recordId);
 
-        $records = Record::find($recordId);
-
-        $titleId = $records->title_id;
+        $titleId = $record->title_id;
 
         $titles = Title::find($titleId);
+
+        $page = $request->page;
 
         $record->delete();
 
         session()->flash('message', '削除しました');
 
-        return redirect('/?id='.$titles->id);
+        return redirect('/?id='.$titles->id.'&page='.$page);
     }
-    
 }

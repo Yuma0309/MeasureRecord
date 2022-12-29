@@ -34,7 +34,7 @@
                             <button type="submit" class="btn btn-primary m-2">
                                 保存
                             </button>
-                            <a class="btn btn-outline-secondary m-2" href="{{ url('/titlesindex') }}">
+                            <a class="btn btn-outline-secondary m-2" href="{{ url('titlesindex') }}">
                                 キャンセル
                             </a>
                         </div>

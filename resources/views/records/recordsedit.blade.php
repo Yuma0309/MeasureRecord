@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-md-10">
                     @include('common.errors')
-                    <form action="{{ url('records/update') }}" method="POST">
+                    <form action="{{ url('records/update/?record_id='.$record->id.'&page='.$page) }}" method="POST">
                         @csrf
 
                         <!-- 日付 -->
@@ -45,9 +45,6 @@
                             <a href="{{ url('/?id='.$titles->id.'&page='.$page) }}" class="btn btn-outline-secondary m-2">
                                 キャンセル
                             </a>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$record->id}}">
-                            <input type="hidden" name="page" value="{{$page}}">
                         </div>
                         
                     </form>

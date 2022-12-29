@@ -10,7 +10,7 @@
                 </div>
                 <div class="col-md-10">
                     @include('common.errors')
-                    <form action="{{ url('titles/update') }}" method="POST">
+                    <form action="{{ url('titles/update/?id='.$title->id.'&page='.$page) }}" method="POST">
                         @csrf
 
                         <!-- タイトル -->
@@ -34,11 +34,9 @@
                             <button type="submit" class="btn btn-primary m-2">
                                 保存
                             </button>
-                            <a href="{{ url('/titlesindex') }}" class="btn btn-outline-secondary m-2">
+                            <a href="{{ url('titlesindex/?page='.$page) }}" class="btn btn-outline-secondary m-2">
                                 キャンセル
                             </a>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$title->id}}">
                         </div>
 
                     </form>

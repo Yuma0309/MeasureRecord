@@ -44,13 +44,11 @@
 
                     <!-- タイトル -->
                     <td style="width:35%" class="text-center align-middle">
-                        <form action="{{ url('/') }}" method="POST">
+                        <form action="{{ url('/?id='.$title->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-outline-dark">
                                 {{ $title->title }}
                             </button>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$title->id}}">
                         </form>
                     </td>
 
@@ -65,7 +63,7 @@
 
                     <!-- 編集ボタン -->
                     <td style="width:15%" class="text-center align-middle">
-                        <form action="{{ url('titlesedit/'.$title->id) }}" method="POST">
+                        <form action="{{ url('titlesedit/?id='.$title->id.'&page='.$page) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-outline-success">
                                 編集
@@ -75,7 +73,7 @@
 
                     <!-- 削除ボタン -->
                     <td style="width:15%" class="text-center align-middle">
-                        <form action="{{ url('title/'.$title->id) }}" method="POST">
+                        <form action="{{ url('title/?id='.$title->id.'&page='.$page) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>

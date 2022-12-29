@@ -48,10 +48,12 @@ class TitlesController extends Controller
     }
 
     // タイトル画面表示
-    public function titleindex() {
+    public function titleindex(Request $request) {
+        $page = $request->page;
         $titles = Title::orderBy('created_at', 'asc')->paginate(10);
         return view('titles.titlesindex', [
-            'titles' => $titles
+            'titles' => $titles,
+            'page' => $page
         ]);
     }
 
@@ -85,9 +87,14 @@ class TitlesController extends Controller
     }
 
     // タイトル編集画面表示
-    public function titleedit($titleId) {
+    public function titleedit(Request $request) {
+        $titleId = $request->id;
         $titles = Title::find($titleId);
-        return view('titles.titlesedit', ['title' => $titles]);
+        $page = $request->page;
+        return view('titles.titlesedit', [
+            'title' => $titles,
+            'page' => $page
+        ]);
     }
 
     // タイトル編集処理
@@ -103,10 +110,13 @@ class TitlesController extends Controller
 
         $title = Title::find($titleId);
 
+        $page = $request->page;
+
         // バリデーション：エラー
         if ($validator->fails()) {
             return view('titles.titlesedit', [
-                'title' => $title
+                'title' => $title,
+                'page' => $page
             ])->withErrors($validator);
         }
 
@@ -118,16 +128,21 @@ class TitlesController extends Controller
     
         session()->flash('message', 'タイトルを保存しました');
 
-        return redirect('/titlesindex?id='.$title->id);
+        return redirect('/titlesindex/?page='.$page);
     }
 
     // タイトル削除処理
-    public function titledestroy(Title $title) {
+    public function titledestroy(Request $request) {
+        $titleId = $request->id;
+
+        $title = Title::find($titleId);
+
+        $page = $request->page;
+
         $title->delete();
 
         session()->flash('message', 'タイトルを削除しました');
 
-        return redirect('/titlesindex');
+        return redirect('/titlesindex/?page='.$page);
     }
-
 }

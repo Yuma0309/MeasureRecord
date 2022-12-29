@@ -31,13 +31,13 @@ Route::get('/titlesadd', 'App\Http\Controllers\TitlesController@titleaddindex');
 Route::post('/titlesadd/store', 'App\Http\Controllers\TitlesController@titleadd');
 
 // タイトル編集画面
-Route::post('/titlesedit/{titles}', 'App\Http\Controllers\TitlesController@titleedit');
+Route::post('/titlesedit', 'App\Http\Controllers\TitlesController@titleedit');
 
 // タイトル編集処理
 Route::post('/titles/update', 'App\Http\Controllers\TitlesController@titleupdate');
 
 // タイトル削除処理
-Route::delete('/title/{title}', 'App\Http\Controllers\TitlesController@titledestroy');
+Route::delete('/title', 'App\Http\Controllers\TitlesController@titledestroy');
 
 // ------------------------------------------------------------------------------------------
 
@@ -61,7 +61,7 @@ Route::post('/recordsedit', 'App\Http\Controllers\RecordsController@edit');
 Route::post('/records/update', 'App\Http\Controllers\RecordsController@update');
 
 // 測定値削除処理
-Route::delete('/record/{record}', 'App\Http\Controllers\RecordsController@destroy');
+Route::delete('/record', 'App\Http\Controllers\RecordsController@destroy');
 
 // ------------------------------------------------------------------------------------------
 

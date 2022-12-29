@@ -10,8 +10,6 @@
             {{ $titles->title }}
         </a>
     </div>
-    <!-- id値を送信 -->
-    <input type="hidden" name="id" value="{{$titles->id}}">
 </form>
 
 <div class="row mx-0">
@@ -25,7 +23,7 @@
                 </div>
                 <div>
                     @include('common.errors')
-                    <form action="{{ url('records') }}" method="POST">
+                    <form action="{{ url('records/?id='.$titles->id) }}" method="POST">
                         @csrf
 
                         <!-- 日付 -->
@@ -57,8 +55,6 @@
                             <button type="submit" class="btn btn-primary m-2">
                                 保存
                             </button>
-                            <!-- id値を送信 -->
-                            <input type="hidden" name="id" value="{{$titles->id}}">
                         </div>
 
                     </form>
@@ -113,14 +109,10 @@
 
 <!-- 検索 -->
 <div class="text-end my-3 mx-3">
-    <form action="{{ url('records/search') }}" method="POST">
+    <form action="{{ url('records/search/?id='.$titles->id.'&sort='.$sort.'&sortNumber='.$sortNumber) }}" method="POST">
         @csrf
         <input type="text" name="keyword" value="{{ $keyword }}">
         <input type="submit" value="検索">
-        <!-- id値を送信 -->
-        <input type="hidden" name="id" value="{{$titles->id}}">
-        <input type="hidden" name="sort" value="{{$sort}}">
-        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
     </form>
 </div>
 
@@ -137,40 +129,31 @@
 
                 <!-- 日付の並べ替えボタン -->
                 <th style="width:24%" class="text-center">
-                    <form action="{{ url('/?sort=date') }}" method="POST">
+                    <form action="{{ url('/?sort=date&id='.$titles->id.'&sortNumber='.$sortNumber.'&keyword='.$keyword) }}" method="POST">
                         @csrf
                         <button style="font-size:9pt;font-weight:bold;" type="submit" class="btn btn-outline-primary w-100">
                             日付
                         </button>
-                        <!-- id値を送信 -->
-                        <input type="hidden" name="id" value="{{$titles->id}}">
-                        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                     </form>
                 </th>
 
                 <!-- 測定値の並べ替えボタン -->
                 <th style="width:28%" class="text-center">
-                    <form action="{{ url('/?sort=amount') }}" method="POST">
+                    <form action="{{ url('/?sort=amount&id='.$titles->id.'&sortNumber='.$sortNumber.'&keyword='.$keyword) }}" method="POST">
                         @csrf
                         <button style="font-size:9pt;font-weight:bold;" type="submit" class="btn btn-outline-primary w-100">
                             測定値
                         </button>
-                        <!-- id値を送信 -->
-                        <input type="hidden" name="id" value="{{$titles->id}}">
-                        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                     </form>
                 </th>
 
                 <!-- コメントの並べ替えボタン -->
                 <th style="width:42%" class="text-center">
-                    <form action="{{ url('/?sort=comment') }}" method="POST">
+                    <form action="{{ url('/?sort=comment&id='.$titles->id.'&sortNumber='.$sortNumber.'&keyword='.$keyword) }}" method="POST">
                         @csrf
                         <button style="font-size:9pt;font-weight:bold;" type="submit" class="btn btn-outline-primary w-100">
                             コメント
                         </button>
-                        <!-- id値を送信 -->
-                        <input type="hidden" name="id" value="{{$titles->id}}">
-                        <input type="hidden" name="sortNumber" value="{{$sortNumber}}">
                     </form>
                 </th>
 
@@ -214,19 +197,17 @@
 
                     <!-- 編集ボタン -->
                     <td class="text-center align-middle">
-                        <form action="{{ url('recordsedit') }}" method="POST">
+                        <form action="{{ url('recordsedit/?record_id='.$record->id.'&page='.$page) }}" method="POST">
                             @csrf
                             <button style="font-size:7pt;font-weight:bold;" type="submit" class="btn btn-outline-success">
                                 編集
                             </button>
-                            <input type="hidden" name="record_id" value="{{$record->id}}">
-                            <input type="hidden" name="page" value="{{$page}}">
                         </form>
                     </td>
 
                     <!-- 削除ボタン -->
                     <td class="text-center align-middle">
-                        <form action="{{ url('record/'.$record->id) }}" method="POST">
+                        <form action="{{ url('record/?record_id='.$record->id.'&page='.$page) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button style="font-size:7pt;font-weight:bold;" type="submit" class="btn btn-outline-danger" onclick='return confirm("本当に削除しますか？");'>
