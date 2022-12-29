@@ -216,7 +216,7 @@ class RecordsController extends Controller
         // バリデーション
         $validator = Validator::make($request->all(), [
             'date' => 'required',
-            'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999'],
+            'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999.94', 'min:-999999999.94'],
             'comment' => 'required|min:1',
         ]);
 
@@ -295,7 +295,7 @@ class RecordsController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'date' => 'required',
-            'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999'],
+            'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999.94', 'min:-999999999.94'],
             'comment' => 'required|min:1',
         ]);
 
