@@ -28,26 +28,26 @@
 
                         <!-- 日付 -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="date">
+                            <label for="date" class="form-label">
                                 日付
                             </label>
-                            <input type="date" name="date" class="form-control">
+                            <input type="date" name="date" class="form-control" id="date">
                         </div>
 
                         <!-- 測定値 -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="amount">
+                            <label for="amount" class="form-label">
                                 測定値
                             </label>
-                            <input type="text" name="amount" class="form-control">
+                            <input type="text" name="amount" class="form-control" id="amount">
                         </div>
 
                         <!-- コメント -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="comment">
+                            <label for="comment" class="form-label">
                                 コメント
                             </label>
-                            <input type="text" name="comment" class="form-control">
+                            <input type="text" name="comment" class="form-control" id="comment">
                         </div>
 
                         <!-- 保存ボタン -->
@@ -100,7 +100,7 @@
     </div>
 
     @if (session('message'))
-        <div class="alert alert-success text-center">
+        <div class="alert alert-success text-center" role="alert">
             {{ session('message') }}
         </div>
     @endif

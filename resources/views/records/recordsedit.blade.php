@@ -15,26 +15,26 @@
 
                         <!-- 日付 -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="date">
+                            <label for="date" class="form-label">
                                 日付
                             </label>
-                            <input type="date" name="date" class="form-control" value="{{$record->date}}"/>
+                            <input type="date" name="date" class="form-control" id="date" value="{{$record->date}}"/>
                         </div>
 
                         <!-- 測定値 -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="amount">
+                            <label for="amount" class="form-label">
                                 測定値
                             </label>
-                            <input type="text" name="amount" class="form-control" value="{{$record->amount}}">
+                            <input type="text" name="amount" class="form-control" id="amount" value="{{$record->amount}}">
                         </div>
 
                         <!-- コメント -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="comment">
+                            <label for="comment" class="form-label">
                                 コメント
                             </label>
-                            <input type="text" name="comment" class="form-control" value="{{$record->comment}}">
+                            <input type="text" name="comment" class="form-control" id="comment" value="{{$record->comment}}">
                         </div>
                         
                         <!-- 保存ボタン -->

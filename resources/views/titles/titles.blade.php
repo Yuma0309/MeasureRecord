@@ -15,18 +15,18 @@
                         
                         <!-- タイトル -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="title">
+                            <label for="title" class="form-label">
                                 タイトル
                             </label>
-                            <input type="text" name="title" class="form-control">
+                            <input type="text" name="title" class="form-control" id="title">
                         </div>
 
                         <!-- 単位 -->
                         <div class="form-group mt-1 mb-3 mx-2">
-                            <label for="unit">
+                            <label for="unit" class="form-label">
                                 測定値の単位
                             </label>
-                            <input type="text" name="unit" class="form-control">
+                            <input type="text" name="unit" class="form-control" id="unit">
                         </div>
 
                         <!-- 保存ボタン -->
