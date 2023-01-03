@@ -65,6 +65,6 @@ Route::delete('/record', 'App\Http\Controllers\RecordsController@destroy');
 
 // ------------------------------------------------------------------------------------------
 
-//Auth
+// Auth
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\RecordsController::class, 'index'])->name('home');

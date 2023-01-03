@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Record; //Recordモデルを使えるようにする
-use App\Models\Title; //Titleモデルを使えるようにする
-use Validator; //バリデーションを使えるようにする
-use Auth; //認証モデルを使用する
+use App\Models\Record; // Recordモデルを使えるようにする
+use App\Models\Title; // Titleモデルを使えるようにする
+use Validator; // バリデーションを使えるようにする
+use Auth; // 認証モデルを使用する
 
 class TitlesController extends Controller
 {
-    //コンストラクタ（このクラスが呼ばれたら最初に処理をする）
+    // コンストラクタ（このクラスが呼ばれたら最初に処理をする）
     public function __construct()
     {
-        //ログイン認証後にだけ表示
+        // ログイン認証後にだけ表示
         $this->middleware('auth');
     }
 
@@ -31,14 +31,14 @@ class TitlesController extends Controller
             'unit' => 'max:30',
         ]);
 
-        //バリデーション：エラー
+        // バリデーション：エラー
         if ($validator->fails()) {
             return redirect('/titles')
                 ->withInput()
                 ->withErrors($validator);
         }
 
-        //Eloquentモデル（保存処理）
+        // Eloquentモデル（保存処理）
         $titles = new Title;
         $titles->user_id = Auth::user()->id;
         $titles->title = $request->title;
@@ -70,14 +70,14 @@ class TitlesController extends Controller
             'unit' => 'max:30',
         ]);
 
-        //バリデーション：エラー
+        // バリデーション：エラー
         if ($validator->fails()) {
             return redirect('/titlesadd')
                 ->withInput()
                 ->withErrors($validator);
         }
 
-        //Eloquentモデル（保存処理）
+        // Eloquentモデル（保存処理）
         $titles = new Title;
         $titles->user_id = Auth::user()->id;
         $titles->title = $request->title;

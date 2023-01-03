@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Record; //Recordモデルを使えるようにする
-use App\Models\Title; //Titleモデルを使えるようにする
-use Validator; //バリデーションを使えるようにする
-use Auth; //認証モデルを使用する
+use App\Models\Record; // Recordモデルを使えるようにする
+use App\Models\Title; // Titleモデルを使えるようにする
+use Validator; // バリデーションを使えるようにする
+use Auth; // 認証モデルを使用する
 use Carbon\Carbon; // Carbonクラスを使用する
 
 class RecordsController extends Controller
 {
-    //コンストラクタ（このクラスが呼ばれたら最初に処理をする）
+    // コンストラクタ（このクラスが呼ばれたら最初に処理をする）
     public function __construct()
     {
-        //ログイン認証後にだけ表示
+        // ログイン認証後にだけ表示
         $this->middleware('auth');
     }
     
@@ -33,7 +33,7 @@ class RecordsController extends Controller
         $titles = Title::find($titleId);
 
         // タイトルがnullの場合、最初の1レコードを表示
-        if (is_null($titles)) { //$sortの初期値（値がない場合）
+        if (is_null($titles)) { // $sortの初期値（値がない場合）
             $titles = Title::first();
             $titleId = $titles->id;
         }
@@ -81,7 +81,7 @@ class RecordsController extends Controller
         }
 
         $sort = $request->sort;
-        if (is_null($sort)) { //$sortの初期値（値がない場合）
+        if (is_null($sort)) { // $sortの初期値（値がない場合）
             $sort = 'created_at';
         }
 
@@ -89,11 +89,11 @@ class RecordsController extends Controller
 
         // 測定値一覧の項目のボタンが押された回数に応じて昇順と降順を切り替える（奇数回なら昇順、偶数回なら降順）
         $sortNumber = $request->sortNumber;
-        if (is_null($sortNumber)) { //$sortNumberの初期値（値がない場合）：'/'にリダイレクト後
+        if (is_null($sortNumber)) { // $sortNumberの初期値（値がない場合）：'/'にリダイレクト後
             $sortNumber = 0;
             $sortOrder = 'desc';
         } else {
-            if (!is_numeric($page)) { //$pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
+            if (!is_numeric($page)) { // $pageがnullの場合：測定値一覧の項目のボタンを押すと'/'にリダイレクトして自動的に$pageがnullになる
                 $sortNumber = $sortNumber + 1;
                 if ($sortNumber % 2 == 0) {
                     $sortOrder = 'desc';
@@ -102,7 +102,7 @@ class RecordsController extends Controller
                     $sortOrder = 'asc';
                     session()->flash('message', '昇順で並べ替えました');
                 }
-            } else { //$pageが数値の場合：ペジネーションのボタンを押すと自動的に$pageが数値になる
+            } else { // $pageが数値の場合：ペジネーションのボタンを押すと自動的に$pageが数値になる
                 if ($sortNumber % 2 == 0) {
                     $sortOrder = 'desc';
                 } else {
@@ -117,7 +117,7 @@ class RecordsController extends Controller
         
         // $keywordに値があれば検索する
         $keyword = $request->keyword;
-        if (is_null($keyword)) { //$keywordの初期値（値がない場合）
+        if (is_null($keyword)) { // $keywordの初期値（値がない場合）
             $keyword = '';
         } else {
             $records = Record::where('title_id', $titleId)
@@ -224,7 +224,7 @@ class RecordsController extends Controller
         $titles = Title::find($titleId);
 
         $sort = $request->sort;
-        if (is_null($sort)) { //$sortの初期値（値がない場合）
+        if (is_null($sort)) { // $sortの初期値（値がない場合）
             $sort = 'created_at';
         }
 
@@ -232,12 +232,12 @@ class RecordsController extends Controller
             ->orderBy($sort, 'asc')
             ->paginate(10);
 
-        //バリデーション：エラー
+        // バリデーション：エラー
         if ($validator->fails()) {
             return redirect('/?id='.$titles->id)->withErrors($validator);
         }        
 
-        //Eloquentモデル（保存処理）
+        // Eloquentモデル（保存処理）
         $records = new Record;
         $records->user_id = Auth::user()->id;
         $records->title_id = $titleId;
