@@ -68,3 +68,11 @@ Route::delete('/record', 'App\Http\Controllers\RecordsController@destroy');
 // Auth
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\RecordsController::class, 'index'])->name('home');
+
+// ------------------------------------------------------------------------------------------
+
+// // メール画面
+// Route::get('/mail', [App\Http\Controllers\MailController::class, 'index']);
+
+// // メール送信処理
+// Route::post('/mail/send', [App\Http\Controllers\MailController::class, 'send'])->name('mail.send');

@@ -159,6 +159,9 @@ return [
         'amount' => '測定値',
         'comment' => 'コメント',
         'unit' => '測定値の単位',
+        'email' => 'メールアドレス',
+        'subject' => '件名',
+        'contents' => '内容',
     ],
 
 ];
