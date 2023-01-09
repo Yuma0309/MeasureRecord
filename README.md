@@ -6,7 +6,7 @@
 
 ・[MeasRec](http://measrec.s239.xrea.com/measrec.s239/)
 
-![全体画像](./index.jpeg)
+![index](https://user-images.githubusercontent.com/97374588/211234314-d6f9548d-3bf2-47c0-8266-3825045ad941.jpeg)
 
 ※Webアプリのリンクにアクセスすると、最初にログイン認証の画面が表示され、登録を行うことになります。その際に、取得したメールアドレスなどの個人情報はWebアプリの認証にのみ使用します。安心してお使いください。
 
