@@ -97,6 +97,75 @@
                 });
             })
         </script>
+
+        <!-- 年月日別の表示 -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <div class="w-100 tab-container">
+
+            <div class="d-flex tab-togle-group">
+                <div class="border border-1 border-secondary w-100 text-center align-self-center cursor tab-toggle on">年別</div>
+                <div class="border border-1 border-secondary w-100 text-center align-self-center cursor tab-toggle">月別</div>
+                <div class="border border-1 border-secondary w-100 text-center align-self-center cursor tab-toggle">日別</div>
+            </div>
+
+            <form action="{{ url('/?id='.$titles->id) }}" method="GET">
+                <div class="tab-content show">
+                    <select name="graph_year">
+                        <option value="">-</option>
+                        {{ MyFunction::yearSelect() }}
+                    </select>
+                    年
+                    <input type="submit" value="表示">
+                </div>
+            </form>
+
+            <form action="{{ url('/?id='.$titles->id) }}" method="GET">
+                <div class="tab-content">
+                    <select name="graph_year">
+                        <option value="">-</option>
+                        {{ MyFunction::yearSelect() }}
+                    </select>
+                    年
+                    <select name="graph_month">
+                        <option value="">-</option>
+                        {{ MyFunction::monthSelect() }}
+                    </select>
+                    月
+                    <input type="submit" value="表示">
+                </div>
+            </form>
+
+            <form action="{{ url('/?id='.$titles->id) }}" method="GET">
+                <div class="tab-content">
+                    <select name="graph_year">
+                        <option value="">-</option>
+                        {{ MyFunction::yearSelect() }}
+                    </select>
+                    年
+                    <select name="graph_month">
+                        <option value="">-</option>
+                        {{ MyFunction::monthSelect() }}
+                    </select>
+                    月
+                    <select name="graph_day">
+                        <option value="">-</option>
+                        {{ MyFunction::daySelect() }}
+                    </select>
+                    日
+                    <input type="submit" value="表示">
+                </div>
+            </form>
+        </div>
+
+        <script>
+            $(".tab-toggle").on("click",function(){
+                $(this).closest(".tab-container").find(".tab-content").removeClass("show")
+                $(this).closest(".tab-container").find(".tab-content").eq($(this).index()).addClass("show")
+                $(this).closest(".tab-container").find(".tab-toggle").removeClass("on")
+                $(this).addClass("on")
+            })
+        </script>
+
     </div>
 
     @if (session('message'))
