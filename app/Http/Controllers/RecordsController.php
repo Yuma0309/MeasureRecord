@@ -49,9 +49,9 @@ class RecordsController extends Controller
         $graphYear = $request->graph_year; // 年別の表示
         if ($graphYear) {
             $records = Record::where('title_id', $titleId)
-            ->whereBetween('date', ["{$graphYear}-01-01 00:00:00", "{$graphYear}-12-31 23:59:59"])
-            ->orderBy('date', 'asc')
-            ->get();
+                ->whereBetween('date', ["{$graphYear}-01-01 00:00:00", "{$graphYear}-12-31 23:59:59"])
+                ->orderBy('date', 'asc')
+                ->get();
             if ($records->isEmpty()) { // $recordsの値が空の場合
                 session()->flash('message', '該当するデータが見つかりませんでした');
             } else {
@@ -63,9 +63,9 @@ class RecordsController extends Controller
         $dayMax = Carbon::create($graphYear, $graphMonth)->endOfMonth(); // 月末の日付を取得
         if ($graphMonth) {
             $records = Record::where('title_id', $titleId)
-            ->whereBetween('date', ["{$graphYear}-{$graphMonth}-01 00:00:00", "{$dayMax} 23:59:59"]) // 日付が存在しないと表示されない
-            ->orderBy('date', 'asc')
-            ->get();
+                ->whereBetween('date', ["{$graphYear}-{$graphMonth}-01 00:00:00", "{$dayMax} 23:59:59"]) // 日付が存在しないと表示されない
+                ->orderBy('date', 'asc')
+                ->get();
             if ($records->isEmpty()) { // $recordsの値が空の場合
                 session()->flash('message', '該当するデータが見つかりませんでした');
             } else {
@@ -76,9 +76,9 @@ class RecordsController extends Controller
         $graphDay = $request->graph_day; // 日別の表示
         if ($graphDay) {
             $records = Record::where('title_id', $titleId)
-            ->whereBetween('date', ["{$graphYear}-{$graphMonth}-{$graphDay} 00:00:00", "{$graphYear}-{$graphMonth}-{$graphDay} 23:59:59"])
-            ->orderBy('date', 'asc')
-            ->get();
+                ->whereBetween('date', ["{$graphYear}-{$graphMonth}-{$graphDay} 00:00:00", "{$graphYear}-{$graphMonth}-{$graphDay} 23:59:59"])
+                ->orderBy('date', 'asc')
+                ->get();
             if ($records->isEmpty()) { // $recordsの値が空の場合
                 session()->flash('message', '該当するデータが見つかりませんでした');
             } else {

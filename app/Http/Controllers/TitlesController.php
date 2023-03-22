@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\Record; // Recordモデルを使えるようにする
 use App\Models\Title; // Titleモデルを使えるようにする
@@ -51,6 +52,34 @@ class TitlesController extends Controller
     public function titleindex(Request $request) {
         $page = $request->page;
         $titles = Title::orderBy('created_at', 'asc')->paginate(10);
+        return view('titles.titlesindex', [
+            'titles' => $titles,
+            'page' => $page
+        ]);
+    }
+
+    // タイトルグルーピング処理
+    public function titlegroup(Request $request) {
+        $page = $request->page;
+        $titles = Title::orderBy('created_at', 'asc')->paginate(10000);
+        $titles = $titles->groupBy('title');
+
+        $array = [];
+        foreach ($titles as $key => $valueParent) {
+            foreach ($valueParent as $valueChild) {
+                $array[] = $valueChild;
+            }
+        }
+
+        $titles = collect($array);
+        $titles = new LengthAwarePaginator(
+            $titles->forPage($request->page, 10000),
+            count($titles),
+            10000,
+            $request->page,
+            array('path' => 'titlesindex')
+        );
+        
         return view('titles.titlesindex', [
             'titles' => $titles,
             'page' => $page

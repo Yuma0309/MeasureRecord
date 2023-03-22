@@ -18,6 +18,11 @@
     <div style="font-size:15pt;font-weight:bold;" class="text-center my-2 mx-2">
         タイトル一覧
     </div>
+    <div class="text-end">
+        <a href="{{ url('titlesgroup') }}" class="btn btn-primary mb-3 me-3">
+            グループ化
+        </a>
+    </div>
     <table class="table table-striped">
 
         <!-- テーブルヘッダー -->

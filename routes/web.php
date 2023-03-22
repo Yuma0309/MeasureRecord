@@ -24,6 +24,9 @@ Route::post('/titles/store', 'App\Http\Controllers\TitlesController@titlestore')
 // タイトル画面
 Route::get('/titlesindex', 'App\Http\Controllers\TitlesController@titleindex');
 
+// タイトルグルーピング処理
+Route::get('/titlesgroup', 'App\Http\Controllers\TitlesController@titlegroup');
+
 // タイトル追加画面
 Route::get('/titlesadd', 'App\Http\Controllers\TitlesController@titleaddindex');
 
