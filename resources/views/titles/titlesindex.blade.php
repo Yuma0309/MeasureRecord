@@ -19,7 +19,7 @@
         タイトル一覧
     </div>
     <div class="text-end">
-        <a href="{{ url('titlesgroup') }}" class="btn btn-primary mb-3 me-3">
+        <a href="{{ url('titlesgroup') }}" class="btn btn-outline-dark mb-3 me-3">
             グループ化
         </a>
     </div>

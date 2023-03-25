@@ -62,24 +62,24 @@ class TitlesController extends Controller
     public function titlegroup(Request $request) {
         $page = $request->page;
         $titles = Title::orderBy('created_at', 'asc')->paginate(10000);
-        $titles = $titles->groupBy('title');
+        $titles = $titles->groupBy('title'); // グルーピング
 
-        $array = [];
+        $array = []; // 多次元配列の次元を減らす
         foreach ($titles as $key => $valueParent) {
             foreach ($valueParent as $valueChild) {
                 $array[] = $valueChild;
             }
         }
 
-        $titles = collect($array);
-        $titles = new LengthAwarePaginator(
-            $titles->forPage($request->page, 10000),
-            count($titles),
-            10000,
-            $request->page,
-            array('path' => 'titlesindex')
+        $titles = collect($array); // 型の変換（配列 → コレクション）
+        $titles = new LengthAwarePaginator( // ページャーに対応（コレクションから1ページあたり10000ずつ表示する）
+            $titles->forPage($page, 10000), // 表示するコレクション -> (現在のページ番号, 1ページあたりの表示数)
+            count($titles),                 // コレクションの大きさ
+            10000,                          // 1ページあたりの表示数
+            $page,                          // 現在のページ番号
+            array('path' => '/titlesgroup') // オプション（ページの遷移先パス）
         );
-        
+
         return view('titles.titlesindex', [
             'titles' => $titles,
             'page' => $page
