@@ -99,7 +99,7 @@
         </script>
 
         <!-- 年月日別の表示 -->
-        <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <div class="w-100 tab-container">
 
             <div class="d-flex tab-togle-group">
