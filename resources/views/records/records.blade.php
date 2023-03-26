@@ -176,6 +176,14 @@
 
 </div>
 
+<!-- CSV出力 -->
+<div class="text-end">
+    <a href="{{ url('records/csv/?id='.$titles->id.'&sort='.$sort.'&sortNumber='.$sortNumber) }}" 
+        class="btn btn-outline-success mb-3 me-3" onclick='return confirm("CSVファイルを出力（ダウンロード）しますか？");'>
+        CSV出力
+    </a>
+</div>
+
 <!-- 検索 -->
 <div class="text-end my-3 mx-3">
     <form action="{{ url('records/search/?id='.$titles->id.'&sort='.$sort.'&sortNumber='.$sortNumber) }}" method="POST">

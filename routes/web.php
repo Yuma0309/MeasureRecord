@@ -54,6 +54,9 @@ Route::post('/', 'App\Http\Controllers\RecordsController@index');
 // 測定値保存処理
 Route::post('/records', 'App\Http\Controllers\RecordsController@store');
 
+// CSV出力処理
+Route::get('/records/csv', 'App\Http\Controllers\RecordsController@csv');
+
 // 測定値検索処理
 Route::post('/records/search', 'App\Http\Controllers\RecordsController@search');
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 use App\Models\Record; // Recordモデルを使えるようにする
 use App\Models\Title; // Titleモデルを使えるようにする
@@ -289,6 +290,71 @@ class RecordsController extends Controller
         session()->flash('message', '保存しました');
         
         return redirect('/?id='.$titles->id);
+    }
+
+    // CSV出力処理
+    public function csv(Request $request){
+        $titleId = $request->id;
+
+        $titles = Title::find($titleId);
+
+        $sort = $request->sort;
+        if (is_null($sort)) { // $sortの初期値（値がない場合）
+            $sort = 'created_at';
+        }
+
+        // 測定値一覧の項目のボタンが押された回数が奇数回なら昇順、偶数回なら降順
+        $sortNumber = $request->sortNumber;
+        if (is_null($sortNumber)) { // $sortNumberの初期値（値がない場合）：'/'にリダイレクト後
+            $sortNumber = 0;
+            $sortOrder = 'desc';
+        } else {
+            if ($sortNumber % 2 == 0) {
+                $sortOrder = 'desc';
+            } else {
+                $sortOrder = 'asc';
+            }
+        }
+
+        $records = Record::where('title_id', $titleId)
+        ->orderBy($sort, $sortOrder)
+        ->get();
+
+        if ($records->isEmpty()) { // $recordsの値が空の場合
+            session()->flash('message', '該当するデータがありません');
+        } else {
+            $head = ['タイトル', $titles->title, '', '測定値の単位', $titles->unit]; // CSVファイルのタイトル名と測定値の単位の指定
+            $arr = ['日付', '測定値', 'コメント']; // CSVファイルのカラム（列）名の指定
+
+            $stream = fopen('php://temp', 'w'); // ストリーム（一時的に作られるファイル）を書き込みモードで開く
+
+            fputcsv($stream, $head); // 1行目にタイトル名と測定値の単位のみを書き込む（繰り返し処理には入れない）
+            fputcsv($stream, $arr); // 2行目にカラム（列）名のみを書き込む（繰り返し処理には入れない）
+
+            foreach ($records as $record) {
+                $arrInfo = array(
+                    'date' => $record->date,
+                    'amount' => $record->amount,
+                    'comment' => $record->comment
+                    );
+                fputcsv($stream, $arrInfo); // DBの値を繰り返し書き込む
+            }
+
+            rewind($stream);                                       // ファイルポインタを先頭に戻す
+            $csv = stream_get_contents($stream);                   // ストリームの最初から最後までを取得して変数に格納
+            $csv = mb_convert_encoding($csv, 'sjis-win', 'UTF-8'); // 文字コードを「UTF-8」から「sjis-win」に変換
+
+            fclose($stream); // ストリームを閉じる
+
+            $headers = array(                                                        // ヘッダー情報を指定する
+                'Content-Type' => 'text/csv',                                        // データの種類/データ形式
+                'Content-Disposition' => "attachment; filename={$titles->title}.csv" // ダウンロードファイル; ファイルの初期名
+            );
+            
+            return Response::make($csv, 200, $headers); // ファイルをダウンロードする（ブラウザにCSVファイルを返す）
+        }
+
+        return redirect('/?id='.$titles->id.'&sort='.$sort);
     }
 
     // 測定値検索処理
