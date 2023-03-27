@@ -257,7 +257,7 @@ class RecordsController extends Controller
         $validator = Validator::make($request->all(), [
             'date' => 'required',
             'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999.94', 'min:-999999999.94'],
-            'comment' => 'required|min:1',
+            'comment' => '',
         ]);
 
         $titleId = $request->id;
@@ -398,7 +398,7 @@ class RecordsController extends Controller
             'record_id' => 'required',
             'date' => 'required',
             'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999.94', 'min:-999999999.94'],
-            'comment' => 'required|min:1',
+            'comment' => '',
         ]);
 
         $sort = 'created_at';

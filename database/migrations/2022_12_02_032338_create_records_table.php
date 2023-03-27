@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('title_id');
             $table->date('date');
             $table->decimal('amount', 10, 1);
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
