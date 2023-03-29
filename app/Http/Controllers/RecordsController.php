@@ -329,7 +329,7 @@ class RecordsController extends Controller
             $stream = fopen('php://temp', 'w'); // ストリーム（一時的に作られるファイル）を書き込みモードで開く
 
             fputcsv($stream, $head); // 1行目にタイトル名と測定値の単位のみを書き込む（繰り返し処理には入れない）
-            fputcsv($stream, $arr); // 2行目にカラム（列）名のみを書き込む（繰り返し処理には入れない）
+            fputcsv($stream, $arr);  // 2行目にカラム（列）名のみを書き込む（繰り返し処理には入れない）
 
             foreach ($records as $record) {
                 $arrInfo = array(

@@ -71,12 +71,12 @@ class TitlesController extends Controller
             }
         }
 
-        $titles = collect($array); // 型の変換（配列 → コレクション）
-        $titles = new LengthAwarePaginator( // ページャーに対応（コレクションから1ページあたり10000ずつ表示する）
-            $titles->forPage($page, 10), // 表示するコレクション -> (現在のページ番号, 1ページあたりの表示数)
-            count($titles),                 // コレクションの大きさ
-            10,                          // 1ページあたりの表示数
-            $page,                          // 現在のページ番号
+        $titles = collect($array);           // 型の変換（配列 → コレクション）
+        $titles = new LengthAwarePaginator(  // ページャーに対応（コレクションから1ページあたり10000ずつ表示する）
+            $titles->forPage($page, 10),     // 表示するコレクション -> (現在のページ番号, 1ページあたりの表示数)
+            count($titles),                  // コレクションの大きさ
+            10,                              // 1ページあたりの表示数
+            $page,                           // 現在のページ番号
             array('path' => $request->url()) // オプション（ページの遷移先パス）
         );
 
