@@ -1,0 +1,13 @@
+.cursor {
+    cursor: pointer;
+}
+
+.tab-content{
+border: 1px solid #6c757d;
+text-align: center;
+display: none;
+}
+
+.tab-content.show{
+display: block;
+}
