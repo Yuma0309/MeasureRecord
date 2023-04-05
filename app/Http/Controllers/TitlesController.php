@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\Record; // Recordモデルを使えるようにする
@@ -56,6 +58,69 @@ class TitlesController extends Controller
             'titles' => $titles,
             'page' => $page
         ]);
+    }
+
+    // CSVアップロード画面表示
+    public function csvimport() {
+        return view('titles.csvupload');
+    }
+
+    // CSVアップロード処理
+    public function csvupload(Request $request) {
+        // if ($request->hasFile('csvFile')) { // CSVファイルが存在する場合
+        //     if ($request->csvFile->getClientOriginalExtension() !== "csv") { // 拡張子がCSVではない場合
+        //         throw new Exception('不適切な拡張子です');
+        //     }
+        //     $newCsvFileName = $request->csvFile->getClientOriginalName(); // CSVファイル名の取得
+        //     $request->csvFile->storeAs('public/csv', $newCsvFileName);    // CSVファイルの保存
+        // } else {                            // CSVファイルが存在しない場合
+        //     throw new Exception('CSVファイルの取得に失敗しました');
+        // }
+
+        // $csvfile = Storage::disk('local')->get("public/csv/{$newCsvFileName}"); // 保存したCSVファイルの取得
+
+        $input = $request->all();
+        $csvfile = $input['csvFile'];
+        $importfile = fopen($csvfile, "r");
+
+        $line = fgetcsv($importfile);
+        $line = mb_convert_encoding($line, 'UTF-8', 'sjis-win'); // 文字コードを「sjis-win」から「UTF-8」に変換
+
+        if(empty($line[1])) { // タイトル名が記載されていない場合
+            session()->flash('message', 'CSVファイルにタイトルが記載されておりません');
+        } else {                // タイトル名が記載されている場合
+            $titles = new Title();
+            $titles->user_id = Auth::user()->id;
+            $titles->title = $line[1];
+            $titles->unit = $line[4];
+            $titles->save(); // タイトル情報を保存
+
+            $titleId = $titles->id;
+
+            while($line = fgetcsv($importfile)) {
+                $line = mb_convert_encoding($line, 'UTF-8', 'sjis-win'); // 文字コードを「sjis-win」から「UTF-8」に変換
+                if($line[0] == '日付') { // ヘッダーの行をスキップ
+                    continue;
+                }
+                if(empty($line[0]) || empty($line[1])) { // 日付または測定値が記載されていない場合
+                    session()->flash('message', 'CSVファイルに日付または測定値が記載されてないセルがあります');
+                    break;
+                } else {                                 // 日付または測定値が記載されている場合
+                    $records = new Record();
+                    $records->user_id = Auth::user()->id;
+                    $records->title_id = $titleId;
+                    $records->date = $line[0];
+                    $records->amount = $line[1];
+                    $records->comment = $line[2];
+                    $records->save(); // 測定値情報を保存
+                    session()->flash('message', 'CSVファイルからタイトルを保存しました');
+                }
+            }
+        }
+
+        fclose($importfile);
+
+        return redirect('/titlesindex');
     }
 
     // タイトルグルーピング処理

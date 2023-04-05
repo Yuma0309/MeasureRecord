@@ -6,6 +6,11 @@
         タイトル追加
     </a>
 </div>
+<div class="text-start">
+    <a href="{{ url('csvimport') }}" class="btn btn-outline-success mb-3 ms-3">
+        CSV入力
+    </a>
+</div>
 
 @if (session('message'))
     <div class="alert alert-success text-center" role="alert">

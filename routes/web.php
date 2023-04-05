@@ -24,6 +24,12 @@ Route::post('/titles/store', 'App\Http\Controllers\TitlesController@titlestore')
 // タイトル画面
 Route::get('/titlesindex', 'App\Http\Controllers\TitlesController@titleindex');
 
+// CSVアップロード画面
+Route::get('/csvimport', 'App\Http\Controllers\TitlesController@csvimport');
+
+// CSVアップロード処理
+Route::post('/csv/upload', 'App\Http\Controllers\TitlesController@csvupload');
+
 // タイトルグルーピング処理
 Route::get('/titlesgroup', 'App\Http\Controllers\TitlesController@titlegroup');
 
