@@ -71,50 +71,81 @@ class TitlesController extends Controller
         //     if ($request->csvFile->getClientOriginalExtension() !== "csv") { // 拡張子がCSVではない場合
         //         throw new Exception('不適切な拡張子です');
         //     }
-        //     $newCsvFileName = $request->csvFile->getClientOriginalName(); // CSVファイル名の取得
-        //     $request->csvFile->storeAs('public/csv', $newCsvFileName);    // CSVファイルの保存
         // } else {                            // CSVファイルが存在しない場合
         //     throw new Exception('CSVファイルの取得に失敗しました');
         // }
 
-        // $csvfile = Storage::disk('local')->get("public/csv/{$newCsvFileName}"); // 保存したCSVファイルの取得
-
         $input = $request->all();
-        $csvfile = $input['csvFile'];
-        $importfile = fopen($csvfile, "r");
+        $csvfile = $input['csvFile'];       // CSVファイルの取得
+        $importfile = fopen($csvfile, "r"); // CSVファイルを読み込みモードで開く
 
-        $line = fgetcsv($importfile);
+        $line = fgetcsv($importfile);                            // 1行目のタイトル名と測定値の単位を読み込む（繰り返し処理には入れない）
         $line = mb_convert_encoding($line, 'UTF-8', 'sjis-win'); // 文字コードを「sjis-win」から「UTF-8」に変換
 
-        if(empty($line[1])) { // タイトル名が記載されていない場合
-            session()->flash('message', 'CSVファイルにタイトルが記載されておりません');
-        } else {                // タイトル名が記載されている場合
-            $titles = new Title();
-            $titles->user_id = Auth::user()->id;
-            $titles->title = $line[1];
-            $titles->unit = $line[4];
-            $titles->save(); // タイトル情報を保存
+        $arr = [
+            'title' => $line[1],
+            'unit' => $line[4]
+        ];
 
-            $titleId = $titles->id;
+        // バリデーション
+        $validator = Validator::make($arr, [
+            'title' => 'required|min:1|max:30',
+            'unit' => 'max:30',
+        ]);
 
-            while($line = fgetcsv($importfile)) {
-                $line = mb_convert_encoding($line, 'UTF-8', 'sjis-win'); // 文字コードを「sjis-win」から「UTF-8」に変換
-                if($line[0] == '日付') { // ヘッダーの行をスキップ
-                    continue;
-                }
-                if(empty($line[0]) || empty($line[1])) { // 日付または測定値が記載されていない場合
-                    session()->flash('message', 'CSVファイルに日付または測定値が記載されてないセルがあります');
-                    break;
-                } else {                                 // 日付または測定値が記載されている場合
-                    $records = new Record();
-                    $records->user_id = Auth::user()->id;
-                    $records->title_id = $titleId;
-                    $records->date = $line[0];
-                    $records->amount = $line[1];
-                    $records->comment = $line[2];
-                    $records->save(); // 測定値情報を保存
+        // バリデーション：エラー
+        if ($validator->fails()) {
+            return redirect('/csvimport')
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $titles = new Title();
+        $titles->user_id = Auth::user()->id;
+        $titles->title = $line[1];
+        $titles->unit = $line[4];
+        $titles->save(); // タイトル情報を保存
+
+        $titleId = $titles->id;
+
+        while($line = fgetcsv($importfile)) {
+            $line = mb_convert_encoding($line, 'UTF-8', 'sjis-win'); // 文字コードを「sjis-win」から「UTF-8」に変換
+            if($line[0] == '日付') { // ヘッダーの行をスキップ
+                continue;
+            }
+            if(empty($line[0]) || empty($line[1])) { // 日付または測定値が記載されていない場合
+                session()->flash('message', 'CSVファイルに日付または測定値が記載されてないセルがあります');
+                break;
+            } else {                                 // 日付または測定値が記載されている場合
+                $array = [
+                    'date' => $line[0],
+                    'amount' => $line[1],
+                    'comment' => $line[2]
+                ];
+
+                // バリデーション
+                $validator = Validator::make($array, [
+                    'date' => ['required', 'date'],
+                    'amount' => ['required', 'numeric', 'regex:/((^(-*)[0-9]{0,9})(.[0-9]{0,2}$))/', 'max:999999999.94', 'min:-999999999.94'],
+                    'comment' => '',
+                ]);
+
+                // バリデーション：エラー
+                if ($validator->fails()) {
                     session()->flash('message', 'CSVファイルからタイトルを保存しました');
+                    return redirect('/csvimport')
+                        ->withInput()
+                        ->withErrors($validator);
                 }
+
+                $records = new Record();
+                $records->user_id = Auth::user()->id;
+                $records->title_id = $titleId;
+                $records->date = $line[0];
+                $records->amount = $line[1];
+                $records->comment = $line[2];
+                $records->save(); // 測定値情報を保存
+                session()->flash('message', 'CSVファイルからタイトルを保存しました');
             }
         }
 

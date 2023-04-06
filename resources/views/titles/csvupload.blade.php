@@ -10,6 +10,7 @@
                 </div>
                 <div>
                     <p>CSVファイルを選択してください</p>
+                    @include('common.errors')
                     <form action="{{ url('csv/upload') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
@@ -23,6 +24,13 @@
                         
                     </form>
                 </div>
+
+                @if (session('message'))
+                    <div class="alert alert-success text-center" role="alert">
+                        {{ session('message') }}
+                    </div>
+                @endif
+                
             </div>
         </div>
     </div>
