@@ -1,0 +1,38 @@
+version: "3.9" # Composeファイルのバージョン
+
+services: # バインドマウント
+  app: # サービス名（アプリ）
+    build:
+      context: . # ビルドコンテキスト（buildを実行する場所）の設定
+      dockerfile: ./docker/app/Dockerfile # buildするDockerfileまでのパス（docker-compose.ymlから見た相対パス）
+    volumes:
+      - ./src/:/app # ホスト側の./src/をコンテナ側の/appにマウント
+
+  web: # サービス名（Webサーバー）
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    ports: # ホスト側とコンテナ間のポート番号の対応付けを設定（ホスト側のポート番号 : コンテナのポート番号）
+      - 8080:80
+    depends_on: # サービスの起動順序を制御（app → web の順に起動するように指定）
+      - app
+    volumes:
+      - ./src/:/app
+
+  db: # サービス名（データベース）
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    ports:
+      - 3306:3306
+    environment: # 環境変数の設定
+      MYSQL_DATABASE: measrec # DB名
+      MYSQL_USER: measrec # ユーザー名
+      MYSQL_PASSWORD: root # パスワード
+      MYSQL_ROOT_PASSWORD: root # ルート権限のパスワード
+      TZ: 'Asia/Tokyo' # 時間設定（Time Zone）
+    volumes:
+      - mysql-volume:/var/lib/mysql # 作成した名前付きボリュームをコンテナ側の/var/lib/mysqlにマウント
+      
+volumes: # 名前付きボリュームを作成
+  mysql-volume:
