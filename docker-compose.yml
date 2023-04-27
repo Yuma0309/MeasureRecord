@@ -26,8 +26,8 @@ services: # バインドマウント
     ports:
       - 3306:3306
     environment: # 環境変数の設定
-      MYSQL_DATABASE: measrec # DB名
-      MYSQL_USER: measrec # ユーザー名
+      MYSQL_DATABASE: MeasureRecord # DB名
+      MYSQL_USER: MeasureRecord # ユーザー名
       MYSQL_PASSWORD: root # パスワード
       MYSQL_ROOT_PASSWORD: root # ルート権限のパスワード
       TZ: 'Asia/Tokyo' # 時間設定（Time Zone）

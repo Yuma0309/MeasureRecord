@@ -1,10 +1,10 @@
-# MeasRec
+# MeasureRecord
 
-測定値を記録するアプリです。Measure Recordを略して、「MeasRec」と命名しました。
+測定値を記録するアプリです。
 
-以下のリンクにアクセスすると、Webアプリ「MeasRec」のページに移動します。
+以下のリンクにアクセスすると、Webアプリ「MeasureRecord」のページに移動します。
 
-・[MeasRec](http://measrec.s239.xrea.com/measrec.s239/)
+・[MeasureRecord](http://measrec.s239.xrea.com/measrec.s239/)
 
 ![index](https://user-images.githubusercontent.com/97374588/211234314-d6f9548d-3bf2-47c0-8266-3825045ad941.jpeg)
 
