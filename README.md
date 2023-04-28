@@ -37,8 +37,9 @@
 <br><br><br>
 
 # 開発環境
-- PHP 8.0.18
-- Composer 2.4.2
+- PHP 8.0.28
 - Laravel Framework 9.42.0
-- MySQL 8.0.28
+- MySQL 8.0.33
+- nginx 1.20.2
+- Composer 2.4.4
 - Chart.js 4.1.1
